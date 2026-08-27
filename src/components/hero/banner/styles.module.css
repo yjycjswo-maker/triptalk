@@ -1,0 +1,53 @@
+.hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1920 / 516;
+  background: var(--color-gray-100);
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+.slideActive {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.slideImage {
+  object-fit: cover;
+  object-position: 50% 80%;
+}
+
+.dots {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  gap: 12px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: rgba(255, 255, 255, 0.5); /* 비활성 상태 */
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15); /* 실측: 바깥쪽 그림자 X0 Y0 B4 S0 */
+  cursor: pointer;
+  padding: 0;
+}
+
+.dotActive {
+  background: var(--color-white); /* 실측: 활성 상태 FFFFFF 100% */
+}
+
+/* 참고: 모바일에서 실제로 다른 비율/크롭을 쓴다면 피그마 모바일 배너 프레임을 확인해서
+   여기에 별도 aspect-ratio를 지정해야 합니다. 지금은 데스크탑과 동일 비율(1920:516)로 유지됩니다. */

@@ -1,0 +1,96 @@
+/* 피그마 실측: Header (device=desktop, type=white) 기준 */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  width: 100%;
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--layout-max-width); /* 1280px */
+  height: 80px; /* 실측: h-80 (py-20 포함) */
+  margin: 0 auto;
+  padding: 20px var(--layout-gutter); /* 좌우 20px, 상하 20px */
+}
+
+.leftGroup {
+  display: flex;
+  align-items: center;
+  gap: 24px; /* 로고 - 네비 간격 실측 24px */
+  height: 100%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  width: 56px;
+  height: 32px;
+}
+
+.logo img {
+  width: auto;
+  height: 32px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 100%;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 8px;
+  font-family: var(--font-family-base);
+  font-size: 16px;
+  font-weight: var(--font-weight-medium); /* 비활성: Medium */
+  line-height: 24px;
+  color: var(--color-gray-700);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navItemActive {
+  font-weight: var(--font-weight-bold); /* 활성: Bold */
+  color: var(--color-black);
+  border-bottom: 2px solid var(--color-black);
+}
+
+.loginButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* 실측 8px */
+  height: 40px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 100px; /* 완전 pill */
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.loginIcon {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 780px) {
+  .nav {
+    display: none; /* 모바일은 별도 앱바 스타일 헤더 컴포넌트로 분리 예정 */
+  }
+}

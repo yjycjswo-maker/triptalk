@@ -1,0 +1,197 @@
+/* ==========================================================================
+   1. Font
+   실제 UI 컴포넌트(헤더 등)에서 확인된 폰트: Pretendard Variable
+   (SUIT Variable은 Foundation 문서 페이지 제목에서만 사용되는 것으로 확인되어 제외)
+   ========================================================================== */
+@font-face {
+  font-family: "Pretendard Variable";
+  src: url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2")
+    format("woff2-variations");
+  font-weight: 45 920;
+  font-display: swap;
+}
+
+/* ==========================================================================
+   2. Design tokens
+   피그마 확인 후 값만 이 자리에서 교체하면 전체 페이지에 반영됩니다.
+   ========================================================================== */
+:root {
+  /* Color - Neutral (피그마 Color Foundation 실측) */
+  --color-black: #000000; /* Text Primary */
+  --color-gray-900: #1c1c1c; /* Text Primary Alt */
+  --color-gray-700: #333333; /* Text Secondary */
+  --color-gray-500: #5f5f5f; /* Text Tertiary */
+  --color-gray-450: #777777; /* Text Quaternary */
+  --color-gray-400: #919191; /* Text Disabled */
+  --color-gray-300: #ababab; /* Text Placeholder */
+  --color-gray-200: #d9d9d9; /* Background Gray */
+  --color-gray-150: #e4e4e4; /* Background Medium */
+  --color-gray-100: #f2f2f2; /* Background/Border Light */
+  --color-gray-border: #c7c7c7; /* Border Primary */
+  --color-white: #ffffff;
+
+  /* Color - Brand / Accent (피그마 Color Foundation 실측) */
+  --color-primary: #2974e5; /* Primary Blue */
+  --color-primary-dark: #1b5bc4;
+  --color-accent-red: #f66a6a; /* Error Red */
+  --color-like: #f66a6a;
+
+  /* Color - Semantic */
+  --color-bg: var(--color-white);
+  --color-text: var(--color-black);
+  --color-text-muted: var(--color-gray-450);
+  --color-border: var(--color-gray-100);
+
+  /* Typography - 실제 UI 컴포넌트(헤더)에서 확인: Pretendard Variable */
+  --font-family-base:
+    "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Malgun Gothic",
+    sans-serif;
+
+  --font-size-2xl: 24px; /* 섹션 타이틀 */
+  --font-size-xl: 18px;
+  --font-size-lg: 16px;
+  --font-size-md: 15px; /* 카드 타이틀, 네비 */
+  --font-size-base: 14px; /* 본문 기본 */
+  --font-size-sm: 13px; /* 메타 정보 */
+  --font-size-xs: 12px;
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --line-height-tight: 1.3;
+  --line-height-base: 1.5;
+
+  /* Icon sizes - 피그마 아이콘 규격 실측 */
+  --icon-size-xl: 40px;
+  --icon-size-l: 32px;
+  --icon-size-m: 24px; /* 기본 아이콘 사이즈 */
+  --icon-size-s: 20px;
+  --icon-size-xs: 16px;
+
+  /* Spacing scale (4px 기준) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+
+  /* Layout - 피그마 Foundation > Layout 프레임 실측값 기준 */
+  --layout-max-width: 1280px; /* CONTAINER 1280px */
+  --layout-gutter: 20px; /* 320px margin(flexible) 중 고정 최소값 20px */
+  --layout-gutter-mobile: 20px; /* Mobile 320px 컨텐츠 + 좌우 20px 마진 */
+  --breakpoint-mobile: 780px; /* 0~780 모바일, 781~1920 데스크탑 영역 분기점 */
+  --header-height: 80px; /* 헤더 실측: h-80 (py-20 포함) */
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px rgba(17, 17, 17, 0.06);
+  --shadow-md: 0 4px 12px rgba(17, 17, 17, 0.08);
+
+  /* Z-index */
+  --z-header: 50;
+}
+
+/* ==========================================================================
+   3. Reset
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+button {
+  font-size: inherit;
+  color: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+/* 키보드 포커스 접근성 */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   4. 공통 레이아웃 유틸리티
+   Header / HeroBanner / HotTalk / Board가 공통으로 쓰는 컨테이너 폭
+   ========================================================================== */
+.container {
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  padding: 0 var(--layout-gutter);
+}
+
+@media (max-width: 780px) {
+  .container {
+    padding: 0 var(--layout-gutter-mobile);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
