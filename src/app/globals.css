@@ -19,6 +19,7 @@
   /* Color - Neutral (피그마 Color Foundation 실측) */
   --color-black: #000000; /* Text Primary */
   --color-gray-900: #1c1c1c; /* Text Primary Alt */
+  --color-gray-800: #292929; /* 테이블 작성자 컬럼 전용 (다른 회색과 미묘하게 다름) */
   --color-gray-700: #333333; /* Text Secondary */
   --color-gray-500: #5f5f5f; /* Text Tertiary */
   --color-gray-450: #777777; /* Text Quaternary */
@@ -47,7 +48,8 @@
     "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Malgun Gothic",
     sans-serif;
 
-  --font-size-2xl: 24px; /* 섹션 타이틀 */
+  --font-size-3xl: 28px; /* 섹션 타이틀 실측 (오늘 핫한 트립토크 / 트립토크 게시판) */
+  --font-size-2xl: 24px;
   --font-size-xl: 18px;
   --font-size-lg: 16px;
   --font-size-md: 15px; /* 카드 타이틀, 네비 */
