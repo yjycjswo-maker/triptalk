@@ -1,0 +1,310 @@
+.section {
+  width: 100%;
+  padding: 48px 0 96px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* 실측: Frame427323... 간격 24px */
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  padding: 0 var(--layout-gutter);
+}
+
+.heading {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: 36px;
+  color: var(--color-black);
+  margin: 0;
+}
+
+/* 탭 */
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tab {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-gray-100);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-450);
+  cursor: pointer;
+}
+
+.tabActive {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+/* 검색바 */
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.leftGroup {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1 0 0;
+}
+
+.searchField {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 0 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--color-gray-100);
+}
+
+.searchField input {
+  flex: 1 0 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  color: var(--color-black);
+}
+
+.searchField input::placeholder {
+  color: var(--color-gray-400);
+}
+
+.searchButton {
+  height: 44px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sellButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-primary); /* #2974e5 */
+  color: var(--color-white);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* 필터 아이콘 행 */
+.filterRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 104px;
+  padding: 0 16px;
+  border-radius: 16px;
+  background: var(--color-white);
+}
+
+.filterItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100px;
+  height: 72px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.filterItemActive {
+  background: var(--color-gray-100);
+}
+
+.filterIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+}
+
+.filterLabel {
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  font-weight: var(--font-weight-regular);
+  color: var(--color-gray-700);
+  white-space: nowrap;
+}
+
+/* 숙소 카드 그리드 - 실측: 컨테이너 W1280(fill) H864(hug), gap 32(가로/세로 동일) */
+.roomGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px; /* 실측 */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.roomCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.roomCardLink {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.roomCardLink:hover .roomTitle {
+  text-decoration: underline;
+}
+
+.roomThumbnail {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--color-gray-100);
+  margin-bottom: 12px;
+}
+
+.roomImage {
+  object-fit: cover;
+}
+
+.roomBookmarkBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--color-white);
+  font-size: 11px;
+}
+
+.roomTitle {
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900); /* 1C1C1C 실측 */
+  margin: 0 0 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.roomSubtitle {
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  font-weight: var(--font-weight-regular);
+  color: var(--color-gray-450);
+  margin: 0 0 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.roomTag {
+  display: inline-block;
+  width: fit-content;
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary); /* n(main) 실측 - 파란색 */
+  margin-bottom: 8px;
+}
+
+.roomFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.roomHost {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  color: var(--color-gray-450);
+}
+
+.hostAvatar {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  background-color: var(--color-gray-100);
+}
+
+.roomPrice {
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+}
+
+@media (max-width: 1024px) {
+  .roomGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filterRow {
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 780px) {
+  .searchRow {
+    flex-wrap: wrap;
+  }
+
+  .leftGroup {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .sellButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .roomGrid {
+    grid-template-columns: 1fr;
+  }
+}

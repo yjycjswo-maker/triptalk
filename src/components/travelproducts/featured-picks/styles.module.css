@@ -1,0 +1,160 @@
+.section {
+  width: 100%;
+  padding: 48px 0 0;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--layout-max-width); /* 1280px */
+  margin: 0 auto;
+  padding: 0 var(--layout-gutter); /* 20px */
+}
+
+.heading {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-3xl); /* 28px */
+  font-weight: var(--font-weight-bold);
+  line-height: 36px;
+  color: var(--color-black);
+  margin: 0 0 24px;
+}
+
+.cardRow {
+  display: flex;
+  gap: 24px; /* 실측 */
+  margin-bottom: 24px;
+}
+
+.card {
+  position: relative;
+  width: 628px; /* 실측 */
+  height: 628px; /* 실측 */
+  border-radius: 16px; /* 실측 */
+  overflow: hidden;
+  background-color: var(--color-gray-100);
+}
+
+.cardImage {
+  object-fit: cover;
+}
+
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.65) 100%
+  );
+  /* 실측 채우기 "선형 90%" 근사값 - 정확한 그라디언트 각도/색상 확인 필요 */
+}
+
+.photoBadge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--color-white);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+}
+
+.cardContent {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  color: var(--color-white);
+}
+
+.cardTitle {
+  font-family: var(--font-family-base);
+  font-size: 20px;
+  font-weight: var(--font-weight-bold);
+  margin: 0 0 4px;
+}
+
+.cardSubtitle {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-regular);
+  opacity: 0.85;
+  margin: 0 0 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardPrice {
+  font-family: var(--font-family-base);
+  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+}
+
+/* 프로모 배너 - 정확한 높이 미확보, 카드 비율 기준 근사값 */
+.promoBanner {
+  position: relative;
+  width: 100%;
+  height: 220px; /* 근사값 - 정확한 실측 필요 */
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: var(--color-gray-100);
+}
+
+.promoImage {
+  object-fit: cover;
+}
+
+.promoContent {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 40px;
+  text-align: right;
+}
+
+.promoTags {
+  display: flex;
+  gap: 8px;
+}
+
+.promoTag {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--color-white);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-700);
+}
+
+.promoTitle {
+  font-family: var(--font-family-base);
+  font-size: 22px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+  margin: 0;
+  max-width: 480px;
+}
+
+@media (max-width: 780px) {
+  .cardRow {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+}

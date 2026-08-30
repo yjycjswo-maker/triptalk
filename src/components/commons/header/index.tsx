@@ -7,7 +7,7 @@ import styles from "./styles.module.css";
 
 const NAV_ITEMS = [
   { label: "트립토크", href: "/trip-talk" },
-  { label: "숙박권 구매", href: "/stay" },
+  { label: "숙박권 구매", href: "/travelproducts" },
   { label: "마이 페이지", href: "/my-page" },
 ];
 
@@ -18,7 +18,7 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.inner}>
         <div className={styles.leftGroup}>
-          <Link href="/" className={styles.logo}>
+          <Link href="/trip-talk" className={styles.logo}>
             <Image
               src="/icon/logo/black_size_m.svg"
               alt="TRIP TRIP"
@@ -44,7 +44,7 @@ export default function Header() {
           </nav>
         </div>
 
-        <button type="button" className={styles.loginButton}>
+        <Link href="/login" className={styles.loginButton}>
           로그인
           <svg
             width="24"
@@ -62,7 +62,7 @@ export default function Header() {
               strokeLinejoin="round"
             />
           </svg>
-        </button>
+        </Link>
       </div>
     </header>
   );

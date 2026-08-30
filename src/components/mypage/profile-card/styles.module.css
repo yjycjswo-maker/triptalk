@@ -1,0 +1,165 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* 탭 - 실측: 첫번째 탭(전체) 검정 배경 pill */
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tab {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-gray-100);
+  font-family: var(--font-family-base);
+  font-size: 14px; /* r_14_20 근사 */
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-450);
+  cursor: pointer;
+}
+
+.tabActive {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.tableCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--color-white);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 16px 8px;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.headerRow .colDate,
+.headerRow .colType,
+.headerRow .colAmount,
+.headerRow .colBalance {
+  font-family: var(--font-family-base);
+  font-size: 14px; /* me_14_20 근사 */
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-900); /* 1c1c1c */
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 14px 8px;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row .colDate,
+.row .colType,
+.row .colBalance {
+  font-family: var(--font-family-base);
+  font-size: 14px; /* r_14_20 근사 */
+  font-weight: var(--font-weight-regular);
+  color: var(--color-gray-450);
+}
+
+/* 공통 컬럼 폭 */
+.colDate {
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.colType {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.colAmountFlex {
+  flex: 1 0 0;
+  text-align: right;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+}
+
+.amountPlus {
+  color: var(--color-primary); /* 실측: + 파랑 */
+}
+
+.amountMinus {
+  color: var(--color-like); /* 실측: - 빨강 */
+}
+
+.colBalance {
+  width: 140px;
+  flex-shrink: 0;
+  text-align: right;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  color: var(--color-gray-450);
+}
+
+/* 충전내역 탭 전용: 결제 ID */
+.colPaymentId {
+  width: 160px;
+  flex-shrink: 0;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  color: var(--color-gray-450);
+}
+
+/* 구매/판매내역 탭 공통: 상품명 */
+.colProduct {
+  flex: 1 0 0;
+  min-width: 0;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  color: var(--color-gray-900);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.headerRow .colProduct {
+  font-weight: var(--font-weight-medium);
+}
+
+/* 구매내역 탭 전용: 판매자 (파란 링크) */
+.colSeller {
+  width: 100px;
+  flex-shrink: 0;
+  text-align: right;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+@media (max-width: 780px) {
+  .colType {
+    display: none;
+  }
+}

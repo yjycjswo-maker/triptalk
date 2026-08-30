@@ -1,0 +1,146 @@
+.wrap {
+  display: flex;
+  width: 100%;
+  min-height: 100vh; /* 실측: 1920x1080 풀스크린 레이아웃 */
+}
+
+/* 왼쪽 폼 영역 - 실측 W484 근사 (좌측 컬럼 고정폭) */
+.formSide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 484px; /* 실측 */
+  padding: 40px; /* 실측: 좌우 여백 40px 근사 */
+}
+
+.formInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 340px;
+}
+
+.logo {
+  display: block;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-family: var(--font-family-base);
+  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+  text-align: center;
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-regular);
+  color: var(--color-gray-450);
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  color: var(--color-black);
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--color-gray-300);
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+}
+
+.inputError,
+.inputError:focus {
+  border-color: var(--color-accent-red);
+}
+
+.errorMessage {
+  margin: 8px 0 0;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  line-height: 20px;
+  color: var(--color-accent-red);
+}
+
+.submitButton {
+  width: 100%;
+  height: 48px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-primary); /* #2974e5 */
+  color: var(--color-white);
+  font-family: var(--font-family-base);
+  font-size: 15px;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background: var(--color-primary-dark);
+}
+
+.signupLink {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-regular);
+  color: var(--color-gray-450);
+  text-decoration: none;
+}
+
+.signupLink:hover {
+  color: var(--color-black);
+  text-decoration: underline;
+}
+
+/* 오른쪽 비주얼 이미지 영역 - 남은 너비 전체 */
+.imageSide {
+  position: relative;
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.image {
+  object-fit: cover;
+}
+
+@media (max-width: 780px) {
+  .wrap {
+    flex-direction: column;
+  }
+
+  .formSide {
+    width: 100%;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .imageSide {
+    display: none; /* 모바일에서는 비주얼 이미지 숨김 (필요시 별도 모바일 디자인 확인) */
+  }
+}

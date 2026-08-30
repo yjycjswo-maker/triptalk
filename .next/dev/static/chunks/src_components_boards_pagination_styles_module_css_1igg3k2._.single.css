@@ -1,0 +1,52 @@
+/* [project]/src/components/boards/pagination/styles.module.css [app-client] (css) */
+.styles-module__Wouuaa__pagination {
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  display: flex;
+}
+
+.styles-module__Wouuaa__pageArrow {
+  width: 24px;
+  height: 24px;
+  color: var(--color-black);
+  cursor: pointer;
+  background: none;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  display: flex;
+}
+
+.styles-module__Wouuaa__pageArrow:disabled {
+  color: var(--color-gray-200);
+  cursor: default;
+}
+
+.styles-module__Wouuaa__pageNumber {
+  width: 32px;
+  height: 32px;
+  font-family: var(--font-family-base);
+  font-size: 16px;
+  font-weight: var(--font-weight-regular);
+  color: var(--color-gray-450);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  line-height: 24px;
+  display: flex;
+}
+
+.styles-module__Wouuaa__pageNumberActive {
+  background: var(--color-gray-100);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-black);
+}
+
+/*# sourceMappingURL=src_components_boards_pagination_styles_module_css_1igg3k2._.single.css.map*/

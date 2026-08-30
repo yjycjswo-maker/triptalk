@@ -1,0 +1,224 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* 탭 */
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tab {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-gray-100);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-450);
+  cursor: pointer;
+}
+
+.tabActive {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+/* 검색바 (게시판 검색바에서 날짜 필터 뺀 단순 버전) */
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchField {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 0 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--color-gray-100);
+}
+
+.searchField input {
+  flex: 1 0 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  color: var(--color-black);
+}
+
+.searchField input::placeholder {
+  color: var(--color-gray-400);
+}
+
+.searchButton {
+  height: 44px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* 테이블 - BoardTable과 동일한 구조 */
+.tableInner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+}
+
+.headerRow .colNo,
+.headerRow .colName,
+.headerRow .colPrice,
+.headerRow .colDate {
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-900);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.rowWrap {
+  position: relative;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.row:hover {
+  background-color: var(--color-gray-50, #fafafa);
+}
+
+.colNo {
+  width: 56px;
+  flex-shrink: 0;
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  color: var(--color-gray-400);
+}
+
+.colName {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 0 0;
+  min-width: 0;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-900);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.soldBadge {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(41, 116, 229, 0.1);
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.colPrice {
+  width: 120px;
+  flex-shrink: 0;
+  text-align: right;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-black);
+}
+
+.colDate {
+  width: 100px;
+  flex-shrink: 0;
+  text-align: right;
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  color: var(--color-gray-400);
+}
+
+/* 삭제 버튼 - board-table과 동일 패턴 */
+.deleteButton {
+  position: absolute;
+  top: 50%;
+  right: -28px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.rowWrap:hover .deleteButton {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.deleteIcon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-gray-400);
+  -webkit-mask-image: url("/icon/shape/outline/delete.svg");
+  mask-image: url("/icon/shape/outline/delete.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+@media (max-width: 780px) {
+  .colPrice,
+  .colDate {
+    display: none;
+  }
+}

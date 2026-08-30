@@ -1,0 +1,98 @@
+.actionRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px; /* 실측 */
+  width: 100%;
+  min-width: 640px;
+}
+
+.leftGroup {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* 실측 */
+  flex: 1 0 0;
+  min-width: 640px;
+}
+
+.searchField {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 실측 */
+  flex: 1 0 0;
+  max-width: 640px; /* 실측 */
+  min-width: 180px; /* 실측 */
+  padding: 12px; /* 실측 */
+  border-radius: 8px; /* 실측 */
+  background: var(--color-gray-100);
+}
+
+.searchField input {
+  flex: 1 0 0;
+  min-width: 140px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-family-base);
+  font-size: 16px; /* 실측 */
+  font-weight: var(--font-weight-regular);
+  line-height: 24px; /* 실측 */
+  color: var(--color-black);
+}
+
+.searchField input::placeholder {
+  color: var(--color-gray-400); /* #919191 실측 */
+}
+
+.searchButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 48px; /* 실측 */
+  padding: 12px 16px; /* 실측 */
+  gap: 8px;
+  border: none;
+  border-radius: 8px; /* 실측 */
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-family-base);
+  font-size: 18px; /* 실측 */
+  font-weight: var(--font-weight-semibold);
+  line-height: 24px; /* 실측 */
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.writeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 48px; /* 실측 */
+  padding: 12px 16px; /* 실측 */
+  gap: 8px; /* 실측 */
+  border: none;
+  border-radius: 8px; /* 실측 */
+  background: var(--color-primary); /* #2974e5 실측 */
+  color: var(--color-white);
+  font-family: var(--font-family-base);
+  font-size: 18px; /* 실측 */
+  font-weight: var(--font-weight-semibold);
+  line-height: 24px; /* 실측 */
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (max-width: 780px) {
+  .leftGroup,
+  .actionRow {
+    min-width: 0;
+    flex-wrap: wrap;
+  }
+
+  .writeButton {
+    width: 100%;
+    justify-content: center;
+  }
+}

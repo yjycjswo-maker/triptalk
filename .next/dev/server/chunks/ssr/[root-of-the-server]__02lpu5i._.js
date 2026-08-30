@@ -110,13 +110,16 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/rsc/react-jsx-dev-runtime.js [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-rsc] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.react-server.js [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/src/components/boards/hot-talk/styles.module.css [app-rsc] (css module)");
+;
 ;
 ;
 ;
 const HOT_TALKS = [
     {
         id: 1,
+        postId: 243,
         title: "제주 살이 1일차 청산별곡이 생각나네요",
         author: "홍길동",
         avatar: "/img/profile/avatar-1.png",
@@ -126,6 +129,7 @@ const HOT_TALKS = [
     },
     {
         id: 2,
+        postId: 241,
         title: "길 걷고 있었는데 고양이한테 간택 받았어요",
         author: "홍길동",
         avatar: "/img/profile/avatar-2.png",
@@ -135,6 +139,7 @@ const HOT_TALKS = [
     },
     {
         id: 3,
+        postId: 234,
         title: "강릉 여름바다 보기 좋네요 서핑하고 싶어요!",
         author: "홍길동",
         avatar: "/img/profile/avatar-3.png",
@@ -144,6 +149,7 @@ const HOT_TALKS = [
     },
     {
         id: 4,
+        postId: 239,
         title: "누가 양양 핫하다고 했어 나밖에 없는데?",
         author: "홍길동",
         avatar: "/img/profile/avatar-4.png",
@@ -163,154 +169,162 @@ function HotTalk() {
                     children: "오늘 핫한 트립토크"
                 }, void 0, false, {
                     fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                    lineNumber: 57,
+                    lineNumber: 63,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].cardArea,
                     children: HOT_TALKS.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                             className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].card,
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].thumbnail,
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
-                                        src: item.image,
-                                        alt: item.title,
-                                        fill: true,
-                                        sizes: "112px",
-                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].thumbnailImg
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
+                                href: `/trip-talk/${item.postId}`,
+                                className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].cardLink,
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].thumbnail,
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
+                                            src: item.image,
+                                            alt: item.title,
+                                            fill: true,
+                                            sizes: "112px",
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].thumbnailImg
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                            lineNumber: 70,
+                                            columnNumber: 19
+                                        }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                        lineNumber: 63,
+                                        lineNumber: 69,
                                         columnNumber: 17
-                                    }, this)
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                    lineNumber: 62,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].content,
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].top,
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].title,
-                                                    children: item.title
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                                    lineNumber: 74,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].profile,
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
-                                                            src: item.avatar,
-                                                            alt: item.author,
-                                                            width: 24,
-                                                            height: 24,
-                                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].avatar
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                                            lineNumber: 77,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].author,
-                                                            children: item.author
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                                            lineNumber: 84,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                                    lineNumber: 76,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                            lineNumber: 73,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].bottom,
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].likes,
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
-                                                            width: "24",
-                                                            height: "24",
-                                                            viewBox: "0 0 24 24",
-                                                            fill: "none",
-                                                            "aria-hidden": true,
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                                                                d: "M12 21s-6.7-4.35-9.3-8.2C1 10.2 1.6 6.9 4.3 5.3c2.2-1.3 4.9-.7 6.4 1.2l1.3 1.6 1.3-1.6c1.5-1.9 4.2-2.5 6.4-1.2 2.7 1.6 3.3 4.9 1.6 7.5C18.7 16.65 12 21 12 21z",
-                                                                stroke: "currentColor",
-                                                                strokeWidth: "1.6",
-                                                                strokeLinejoin: "round"
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].content,
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].top,
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].title,
+                                                        children: item.title
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                                        lineNumber: 81,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].profile,
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
+                                                                src: item.avatar,
+                                                                alt: item.author,
+                                                                width: 24,
+                                                                height: 24,
+                                                                className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].avatar
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                                                lineNumber: 84,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].author,
+                                                                children: item.author
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                                                lineNumber: 91,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                                        lineNumber: 83,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                                lineNumber: 80,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].bottom,
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].likes,
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                                width: "24",
+                                                                height: "24",
+                                                                viewBox: "0 0 24 24",
+                                                                fill: "none",
+                                                                "aria-hidden": true,
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                                    d: "M12 21s-6.7-4.35-9.3-8.2C1 10.2 1.6 6.9 4.3 5.3c2.2-1.3 4.9-.7 6.4 1.2l1.3 1.6 1.3-1.6c1.5-1.9 4.2-2.5 6.4-1.2 2.7 1.6 3.3 4.9 1.6 7.5C18.7 16.65 12 21 12 21z",
+                                                                    stroke: "currentColor",
+                                                                    strokeWidth: "1.6",
+                                                                    strokeLinejoin: "round"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                                                    lineNumber: 104,
+                                                                    columnNumber: 25
+                                                                }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/boards/hot-talk/index.tsx",
                                                                 lineNumber: 97,
                                                                 columnNumber: 23
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                                            lineNumber: 90,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        item.likes
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                                    lineNumber: 89,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].date,
-                                                    children: item.date
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                                    lineNumber: 106,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                            lineNumber: 88,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                                    lineNumber: 72,
-                                    columnNumber: 15
-                                }, this)
-                            ]
-                        }, item.id, true, {
+                                                            }, this),
+                                                            item.likes
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                                        lineNumber: 96,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$boards$2f$hot$2d$talk$2f$styles$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].date,
+                                                        children: item.date
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                                        lineNumber: 113,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                                lineNumber: 95,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                        lineNumber: 79,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/boards/hot-talk/index.tsx",
+                                lineNumber: 68,
+                                columnNumber: 15
+                            }, this)
+                        }, item.id, false, {
                             fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                            lineNumber: 61,
+                            lineNumber: 67,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-                    lineNumber: 59,
+                    lineNumber: 65,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-            lineNumber: 56,
+            lineNumber: 62,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/boards/hot-talk/index.tsx",
-        lineNumber: 55,
+        lineNumber: 61,
         columnNumber: 5
     }, this);
 }
@@ -323,6 +337,7 @@ __turbopack_context__.v({
   "bottom": "styles-module__1c_h1G__bottom",
   "card": "styles-module__1c_h1G__card",
   "cardArea": "styles-module__1c_h1G__cardArea",
+  "cardLink": "styles-module__1c_h1G__cardLink",
   "container": "styles-module__1c_h1G__container",
   "content": "styles-module__1c_h1G__content",
   "date": "styles-module__1c_h1G__date",

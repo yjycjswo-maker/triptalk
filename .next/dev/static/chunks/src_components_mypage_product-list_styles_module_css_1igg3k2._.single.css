@@ -1,0 +1,219 @@
+/* [project]/src/components/mypage/product-list/styles.module.css [app-client] (css) */
+.styles-module__jLLSHW__wrap {
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  display: flex;
+}
+
+.styles-module__jLLSHW__tabs {
+  gap: 8px;
+  display: flex;
+}
+
+.styles-module__jLLSHW__tab {
+  background: var(--color-gray-100);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-450);
+  cursor: pointer;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+}
+
+.styles-module__jLLSHW__tabActive {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.styles-module__jLLSHW__searchRow {
+  align-items: center;
+  gap: 8px;
+  display: flex;
+}
+
+.styles-module__jLLSHW__searchField {
+  background: var(--color-gray-100);
+  border-radius: 8px;
+  flex: 1 0 0;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  display: flex;
+}
+
+.styles-module__jLLSHW__searchField input {
+  font-family: var(--font-family-base);
+  color: var(--color-black);
+  background: none;
+  border: none;
+  outline: none;
+  flex: 1 0 0;
+  font-size: 14px;
+}
+
+.styles-module__jLLSHW__searchField input::placeholder {
+  color: var(--color-gray-400);
+}
+
+.styles-module__jLLSHW__searchButton {
+  background: var(--color-black);
+  height: 44px;
+  color: var(--color-white);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  white-space: nowrap;
+  border: none;
+  border-radius: 8px;
+  padding: 0 20px;
+}
+
+.styles-module__jLLSHW__tableInner {
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  display: flex;
+}
+
+.styles-module__jLLSHW__headerRow {
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  display: flex;
+}
+
+.styles-module__jLLSHW__headerRow .styles-module__jLLSHW__colNo, .styles-module__jLLSHW__headerRow .styles-module__jLLSHW__colName, .styles-module__jLLSHW__headerRow .styles-module__jLLSHW__colPrice, .styles-module__jLLSHW__headerRow .styles-module__jLLSHW__colDate {
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-900);
+}
+
+.styles-module__jLLSHW__rows {
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  display: flex;
+}
+
+.styles-module__jLLSHW__rowWrap {
+  width: 100%;
+  position: relative;
+}
+
+.styles-module__jLLSHW__row {
+  border-radius: 8px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  text-decoration: none;
+  transition: background-color .15s;
+  display: flex;
+}
+
+.styles-module__jLLSHW__row:hover {
+  background-color: var(--color-gray-50, #fafafa);
+}
+
+.styles-module__jLLSHW__colNo {
+  width: 56px;
+  font-family: var(--font-family-base);
+  color: var(--color-gray-400);
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+.styles-module__jLLSHW__colName {
+  min-width: 0;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-900);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 0 0;
+  align-items: center;
+  gap: 8px;
+  display: flex;
+  overflow: hidden;
+}
+
+.styles-module__jLLSHW__soldBadge {
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  background: #2974e51a;
+  border-radius: 999px;
+  flex-shrink: 0;
+  padding: 2px 8px;
+}
+
+.styles-module__jLLSHW__colPrice {
+  text-align: right;
+  width: 120px;
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-black);
+  flex-shrink: 0;
+}
+
+.styles-module__jLLSHW__colDate {
+  text-align: right;
+  width: 100px;
+  font-family: var(--font-family-base);
+  color: var(--color-gray-400);
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+.styles-module__jLLSHW__deleteButton {
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  background: none;
+  border: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  transition: opacity .15s;
+  position: absolute;
+  top: 50%;
+  right: -28px;
+  transform: translateY(-50%);
+}
+
+.styles-module__jLLSHW__rowWrap:hover .styles-module__jLLSHW__deleteButton {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.styles-module__jLLSHW__deleteIcon {
+  background-color: var(--color-gray-400);
+  width: 20px;
+  height: 20px;
+  display: block;
+  -webkit-mask-image: url("/icon/shape/outline/delete.svg");
+  mask-image: url("/icon/shape/outline/delete.svg");
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@media (max-width: 780px) {
+  .styles-module__jLLSHW__colPrice, .styles-module__jLLSHW__colDate {
+    display: none;
+  }
+}
+
+/*# sourceMappingURL=src_components_mypage_product-list_styles_module_css_1igg3k2._.single.css.map*/

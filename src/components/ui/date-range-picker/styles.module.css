@@ -1,0 +1,90 @@
+.wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-gray-100);
+  cursor: pointer;
+  min-width: 270px;
+}
+
+.triggerText {
+  font-family: var(--font-family-base);
+  font-size: 16px;
+  font-weight: var(--font-weight-regular);
+  line-height: 24px;
+  color: var(--color-gray-450);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  min-width: 158px;
+  text-align: left;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
+  width: max-content;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--color-white);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+
+  --rdp-cell-size: 50px;
+  --rdp-accent-color: var(--color-primary);
+  --rdp-background-color: var(--color-gray-100);
+}
+
+.popover :global(.rdp-table) {
+  table-layout: fixed;
+  width: auto;
+}
+
+.popover :global(.rdp-cell),
+.popover :global(.rdp-day) {
+  width: var(--rdp-cell-size);
+  height: var(--rdp-cell-size);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-gray-100);
+}
+
+.cancelButton {
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+  background: var(--color-white);
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-700);
+  cursor: pointer;
+}
+
+.confirmButton {
+  height: 36px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-primary);
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+  cursor: pointer;
+}

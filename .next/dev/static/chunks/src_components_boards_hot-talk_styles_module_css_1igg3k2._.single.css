@@ -39,6 +39,20 @@
   display: flex;
 }
 
+.styles-module__1c_h1G__cardLink {
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  align-items: flex-start;
+  gap: 8px;
+  text-decoration: none;
+  display: flex;
+}
+
+.styles-module__1c_h1G__cardLink:hover .styles-module__1c_h1G__title {
+  text-decoration: underline;
+}
+
 .styles-module__1c_h1G__thumbnail {
   background-color: var(--color-gray-100);
   border-radius: 8px;
