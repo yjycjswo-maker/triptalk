@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./styles.module.css";
 
 interface FeaturedCard {
@@ -40,7 +41,12 @@ export default function FeaturedPicks() {
 
         <div className={styles.cardRow}>
           {FEATURED_CARDS.map((card) => (
-            <div key={card.id} className={styles.card}>
+            <Link
+              key={card.id}
+              href={`/travelproducts/${card.id}`}
+              className={styles.card}
+              aria-label={`${card.title} 상세 페이지로 이동`}
+            >
               <Image
                 src={card.image}
                 alt={card.title}
@@ -82,7 +88,7 @@ export default function FeaturedPicks() {
                 <p className={styles.cardSubtitle}>{card.subtitle}</p>
                 <p className={styles.cardPrice}>{card.price}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

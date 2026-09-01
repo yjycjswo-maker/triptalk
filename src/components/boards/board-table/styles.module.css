@@ -2,22 +2,22 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px; /* 실측 */
+  gap: 8px;
   width: 100%;
 }
 
 .headerRow {
   display: flex;
   align-items: center;
-  gap: 8px; /* 실측 */
+  gap: 8px;
   width: 100%;
-  padding: 16px 24px; /* 실측 */
+  padding: 16px 24px;
 }
 
 .rows {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* 실측 */
+  gap: 12px;
   width: 100%;
 }
 
@@ -29,11 +29,11 @@
 .row {
   display: flex;
   align-items: center;
-  gap: 8px; /* 실측 */
+  gap: 8px;
   width: 100%;
-  padding: 12px 24px; /* 실측 */
-  border: 1px solid var(--color-gray-100); /* #f2f2f2 실측 */
-  border-radius: 8px; /* 실측 */
+  padding: 12px 24px;
+  border: 1px solid var(--color-gray-100);
+  border-radius: 8px;
   text-decoration: none;
   transition: background-color 0.15s ease;
 }
@@ -47,7 +47,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64px; /* 실측 */
+  width: 64px;
   flex-shrink: 0;
 }
 
@@ -63,7 +63,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100px; /* 실측 */
+  width: 100px;
   flex-shrink: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -74,7 +74,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100px; /* 실측 */
+  width: 100px;
   flex-shrink: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -87,10 +87,10 @@
 .headerRow .colAuthor,
 .headerRow .colDate {
   font-family: var(--font-family-base);
-  font-size: 16px; /* 실측 */
+  font-size: 16px;
   font-weight: var(--font-weight-medium);
-  line-height: 20px; /* 실측 */
-  color: var(--color-gray-900); /* #1c1c1c 실측 */
+  line-height: 20px;
+  color: var(--color-gray-900);
 }
 
 /* 바디(row) 텍스트 */
@@ -98,22 +98,22 @@
 .row .colAuthor,
 .row .colDate {
   font-family: var(--font-family-base);
-  font-size: 14px; /* 실측 */
+  font-size: 14px;
   font-weight: var(--font-weight-light);
-  line-height: 20px; /* 실측 */
-  color: var(--color-gray-400); /* #919191 실측 */
+  line-height: 20px;
+  color: var(--color-gray-400);
 }
 
 .row .colAuthor {
-  color: var(--color-gray-800); /* #292929 실측 - 작성자만 다른 회색 */
+  color: var(--color-gray-800);
 }
 
 .row .colTitle {
   font-family: var(--font-family-base);
-  font-size: 14px; /* 실측 */
+  font-size: 14px;
   font-weight: var(--font-weight-medium);
-  line-height: 20px; /* 실측 */
-  color: var(--color-gray-900); /* #1c1c1c 실측 */
+  line-height: 20px;
+  color: var(--color-gray-900);
 }
 
 /* 행에 마우스 올리면 박스 안쪽 오른쪽 끝(날짜 컬럼 근처)에 삭제 버튼 노출 */
@@ -145,9 +145,7 @@
   display: block;
   width: 24px;
   height: 24px;
-  background-color: var(
-    --color-gray-400
-  ); /* #919191 - 날짜 텍스트와 동일 색상 */
+  background-color: var(--color-gray-400);
   -webkit-mask-image: url("/icon/shape/outline/delete.svg");
   mask-image: url("/icon/shape/outline/delete.svg");
   -webkit-mask-size: contain;

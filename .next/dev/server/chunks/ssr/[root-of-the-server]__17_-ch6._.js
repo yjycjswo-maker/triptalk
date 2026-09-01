@@ -37,10 +37,10 @@ function StayDetailPage() {
                     ],
                     photoCount: 24,
                     images: [
-                        "/img/stay/detail-1.png",
-                        "/img/stay/detail-2.png",
-                        "/img/stay/detail-3.png",
-                        "/img/stay/detail-4.png"
+                        "/img/Purchase/Purchase-1.png",
+                        "/img/Purchase/Purchase-2.png",
+                        "/img/Purchase/Purchase-3.png",
+                        "/img/Purchase/Purchase-4.png"
                     ],
                     price: "32,500원",
                     purchaseNotes: [
@@ -60,7 +60,10 @@ function StayDetailPage() {
                         "가다니 배 브른 도긔 설진 강수를 비조라조롱곳 누로기 마와 잡스와니 내 엇디 흐리이꼬얄리얄리 얄라성 얄라리 얄라"
                     ],
                     address: "경기 성남시 분당구 낙생마을로 6",
-                    mapImage: "/img/stay/detail-map.png"
+                    coordinates: {
+                        latitude: 37.3908,
+                        longitude: 127.1014
+                    }
                 }, void 0, false, {
                     fileName: "[project]/src/app/travelproducts/[id]/page.tsx",
                     lineNumber: 10,

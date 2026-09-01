@@ -1,0 +1,135 @@
+module.exports = [
+"[externals]/next/dist/compiled/@opentelemetry/api [external] (next/dist/compiled/@opentelemetry/api, cjs)", ((__turbopack_context__, module, exports) => {
+
+var mod = __turbopack_context__.x("next/dist/compiled/@opentelemetry/api", () => require("next/dist/compiled/@opentelemetry/api"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/compiled/next-server/app-page-turbo.runtime.dev.js [external] (next/dist/compiled/next-server/app-page-turbo.runtime.dev.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+var mod = __turbopack_context__.x("next/dist/compiled/next-server/app-page-turbo.runtime.dev.js", () => require("next/dist/compiled/next-server/app-page-turbo.runtime.dev.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js [external] (next/dist/compiled/next-server/app-route-turbo.runtime.dev.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+var mod = __turbopack_context__.x("next/dist/compiled/next-server/app-route-turbo.runtime.dev.js", () => require("next/dist/compiled/next-server/app-route-turbo.runtime.dev.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/server/app-render/action-async-storage.external.js [external] (next/dist/server/app-render/action-async-storage.external.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+var mod = __turbopack_context__.x("next/dist/server/app-render/action-async-storage.external.js", () => require("next/dist/server/app-render/action-async-storage.external.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/server/app-render/after-task-async-storage.external.js [external] (next/dist/server/app-render/after-task-async-storage.external.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+var mod = __turbopack_context__.x("next/dist/server/app-render/after-task-async-storage.external.js", () => require("next/dist/server/app-render/after-task-async-storage.external.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/server/app-render/work-async-storage.external.js [external] (next/dist/server/app-render/work-async-storage.external.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+var mod = __turbopack_context__.x("next/dist/server/app-render/work-async-storage.external.js", () => require("next/dist/server/app-render/work-async-storage.external.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/server/app-render/work-unit-async-storage.external.js [external] (next/dist/server/app-render/work-unit-async-storage.external.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+var mod = __turbopack_context__.x("next/dist/server/app-render/work-unit-async-storage.external.js", () => require("next/dist/server/app-render/work-unit-async-storage.external.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/server/runtime-reacts.external.js [external] (next/dist/server/runtime-reacts.external.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+var mod = __turbopack_context__.x("next/dist/server/runtime-reacts.external.js", () => require("next/dist/server/runtime-reacts.external.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/shared/lib/no-fallback-error.external.js [external] (next/dist/shared/lib/no-fallback-error.external.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+var mod = __turbopack_context__.x("next/dist/shared/lib/no-fallback-error.external.js", () => require("next/dist/shared/lib/no-fallback-error.external.js"));
+
+module.exports = mod;
+}),
+"[externals]/node:stream [external] (node:stream, cjs)", ((__turbopack_context__, module, exports) => {
+
+var mod = __turbopack_context__.x("node:stream", () => require("node:stream"));
+
+module.exports = mod;
+}),
+"[project]/src/app/api/route.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "POST",
+    ()=>POST
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/server.js [app-route] (ecmascript)");
+;
+// 백엔드 GraphQL 서버 주소 정의
+const GRAPHQL_API = "https://main-practice.codebootcamp.co.kr/graphql";
+async function POST(request) {
+    // 클라이언트(Apollo Client)가 보낸 GraphQL Query/Mutation 본문을 그대로 가져옴
+    const query = await request.text();
+    // 클라이언트가 보낸 요청에서 인증 헤더와 쿠키 정보를 추출
+    const authorization = request.headers.get("authorization");
+    const cookie = request.headers.get("cookie");
+    // 백엔드로 보낼 새로운 헤더 객체 생성
+    const headers = new Headers({
+        "content-type": "application/json",
+        // 로그인 API의 Origin 오류를 방지하기 위해 출처(Origin) 정보를 설정
+        origin: request.headers.get("origin") ?? request.nextUrl.origin
+    });
+    // 인증 토큰이나 쿠키가 존재하면 백엔드 요청 헤더에 그대로 추가
+    if (authorization) headers.set("authorization", authorization);
+    if (cookie) headers.set("cookie", cookie);
+    try {
+        // 실제 백엔드 GraphQL API로 요청을 전달(프록시 역할)
+        const apiResponse = await fetch(GRAPHQL_API, {
+            method: "POST",
+            headers,
+            body: query,
+            cache: "no-store"
+        });
+        const responseBody = await apiResponse.text();
+        let responseStatus = apiResponse.status;
+        // GraphQL 서버는 입력 오류를 HTTP 400과 errors 배열로 반환할 수 있습니다.
+        // Apollo Client가 errors 배열의 실제 메시지를 읽을 수 있도록 이 경우에는
+        // GraphQL 규약에 맞춰 HTTP 200으로 전달합니다.
+        try {
+            const responseData = JSON.parse(responseBody);
+            if (responseData.errors?.length) {
+                responseStatus = 200;
+            }
+        } catch  {
+        // JSON이 아닌 응답은 원래 HTTP 상태 코드를 유지합니다.
+        }
+        const result = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"](responseBody, {
+            status: responseStatus,
+            headers: {
+                "content-type": "application/json"
+            }
+        });
+        // 로그인 성공 시 백엔드가 보낸 Refresh Token 쿠키를 추출하여 브라우저에 전달
+        const setCookie = apiResponse.headers.get("set-cookie");
+        if (setCookie) result.headers.set("set-cookie", setCookie);
+        return result;
+    } catch  {
+        // 백엔드 서버와 통신 중 에러 발생 시 502 에러 응답 반환
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            errors: [
+                {
+                    message: "과제용 API에 연결할 수 없어요."
+                }
+            ]
+        }, {
+            status: 502
+        });
+    }
+}
+}),
+];
+
+//# sourceMappingURL=%5Broot-of-the-server%5D__170mtmj._.js.map

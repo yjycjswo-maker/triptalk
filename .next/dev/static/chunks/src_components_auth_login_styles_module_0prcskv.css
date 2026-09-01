@@ -104,6 +104,11 @@
   background: var(--color-primary-dark);
 }
 
+.styles-module__8AUjmW__submitButton:disabled {
+  cursor: not-allowed;
+  opacity: .7;
+}
+
 .styles-module__8AUjmW__signupLink {
   font-family: var(--font-family-base);
   font-size: 13px;

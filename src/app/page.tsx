@@ -1,16 +1,16 @@
 import Header from "@/components/commons/header";
 import HeroBanner from "@/components/hero/banner";
-import HotTalk from "@/components/boards/hot-talk";
-import Board from "@/components/boards/board";
+import FeaturedPicks from "@/components/travelproducts/featured-picks";
+import StayListing from "@/components/travelproducts/listing";
 
-export default function HomePage() {
+export default function StayPage() {
   return (
     <>
       <Header />
       <main>
         <HeroBanner />
-        <HotTalk />
-        <Board />
+        <FeaturedPicks />
+        <StayListing />
       </main>
     </>
   );

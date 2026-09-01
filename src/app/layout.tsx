@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ApolloClientProvider from "@/components/providers/apollo-provider";
 
 export const metadata: Metadata = {
   title: "TRIP TRIP",
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <ApolloClientProvider>{children}</ApolloClientProvider>
+      </body>
     </html>
   );
 }

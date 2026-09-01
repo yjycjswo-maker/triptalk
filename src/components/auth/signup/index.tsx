@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useMutation } from "@apollo/client/react";
+import { CREATE_USER } from "@/graphql/mutations";
 import styles from "./styles.module.css";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -21,13 +24,40 @@ const INITIAL_ERRORS: FieldErrors = {
   passwordConfirm: false,
 };
 
+function getSignupErrorMessage(error: unknown) {
+  return error instanceof Error
+    ? error.message
+    : "회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+}
+
+function getValidationErrorMessage(errors: FieldErrors) {
+  if (errors.email) return "올바른 이메일 주소를 입력해 주세요.";
+  if (errors.name) return "이름을 입력해 주세요.";
+  if (errors.password) return "비밀번호를 입력해 주세요.";
+  if (errors.passwordConfirm) return "비밀번호가 일치하지 않습니다.";
+  return "입력 내용을 확인해 주세요.";
+}
+
+type CreateUserVariables = {
+  createUserInput: {
+    email: string;
+    name: string;
+    password: string;
+  };
+};
+
 export default function SignupForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errors, setErrors] = useState<FieldErrors>(INITIAL_ERRORS);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [signupError, setSignupError] = useState<string | null>(null);
+  const [createUser, { loading }] = useMutation<unknown, CreateUserVariables>(
+    CREATE_USER,
+  );
 
   const validate = (values: Partial<Record<keyof FieldErrors, string>> = {}): FieldErrors => {
     const nextEmail = values.email ?? email;
@@ -44,7 +74,7 @@ export default function SignupForm() {
     };
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const nextErrors = validate();
@@ -55,11 +85,27 @@ export default function SignupForm() {
       return;
     }
 
-    // TODO: 회원가입 API 연동
+    setSignupError(null);
+
+    try {
+      await createUser({
+        variables: {
+          createUserInput: {
+            email: email.trim(),
+            name: name.trim(),
+            password,
+          },
+        },
+      });
+      router.replace("/login");
+    } catch (error) {
+      setSignupError(getSignupErrorMessage(error));
+    }
   };
 
   const handleEmailChange = (value: string) => {
     setEmail(value);
+    setSignupError(null);
 
     if (hasSubmitted) {
       setErrors(validate({ email: value }));
@@ -68,6 +114,7 @@ export default function SignupForm() {
 
   const handleNameChange = (value: string) => {
     setName(value);
+    setSignupError(null);
 
     if (hasSubmitted) {
       setErrors(validate({ name: value }));
@@ -76,6 +123,7 @@ export default function SignupForm() {
 
   const handlePasswordChange = (value: string) => {
     setPassword(value);
+    setSignupError(null);
 
     if (hasSubmitted) {
       setErrors(validate({ password: value }));
@@ -84,13 +132,15 @@ export default function SignupForm() {
 
   const handlePasswordConfirmChange = (value: string) => {
     setPasswordConfirm(value);
+    setSignupError(null);
 
     if (hasSubmitted) {
       setErrors(validate({ passwordConfirm: value }));
     }
   };
 
-  const hasErrors = Object.values(errors).some(Boolean);
+  const hasErrors = Object.values(errors).some(Boolean) || Boolean(signupError);
+  const errorMessage = signupError ?? getValidationErrorMessage(errors);
 
   return (
     <main className={styles.wrap}>
@@ -164,12 +214,16 @@ export default function SignupForm() {
 
             {hasErrors && (
               <p id="signup-error" className={styles.errorMessage} role="alert">
-                입력 내용을 확인해 주세요.
+                {errorMessage}
               </p>
             )}
 
-            <button type="submit" className={styles.submitButton}>
-              회원가입
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={loading}
+            >
+              {loading ? "가입 중..." : "회원가입"}
             </button>
           </form>
 

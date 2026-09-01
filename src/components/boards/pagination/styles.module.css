@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px; /* 실측 */
+  gap: 8px;
   width: 100%;
 }
 
@@ -28,22 +28,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px; /* 실측 */
-  height: 32px; /* 실측 */
-  padding: 10px; /* 실측 */
+  width: 32px;
+  height: 32px;
+  padding: 10px;
   border: none;
-  border-radius: 8px; /* 실측 */
+  border-radius: 8px;
   background: transparent;
   font-family: var(--font-family-base);
-  font-size: 16px; /* 실측 */
+  font-size: 16px;
   font-weight: var(--font-weight-regular);
-  line-height: 24px; /* 실측 */
-  color: var(--color-gray-450); /* #777 실측 */
+  line-height: 24px;
+  color: var(--color-gray-450);
   cursor: pointer;
 }
 
 .pageNumberActive {
-  background: var(--color-gray-100); /* #f2f2f2 실측 */
+  background: var(--color-gray-100);
   font-weight: var(--font-weight-medium);
-  color: var(--color-black); /* 실측 */
+  color: var(--color-black);
 }

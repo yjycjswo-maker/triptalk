@@ -112,14 +112,33 @@
   gap: 8px;
   width: 212px;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .thumbWrap {
   position: relative;
-  flex: 1 0 0;
+  flex: 0 0 calc((100% - 24px) / 3.3);
+  padding: 0;
+  border: 0;
   border-radius: 8px;
   overflow: hidden;
   background-color: var(--color-gray-100);
+  cursor: pointer;
+  opacity: 0.45;
+  filter: grayscale(0.7);
+  transition: opacity 160ms ease, filter 160ms ease;
+}
+
+.thumbWrap:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.thumbWrapActive {
+  outline: 3px solid var(--color-primary);
+  outline-offset: -3px;
+  opacity: 1;
+  filter: none;
 }
 
 .thumbImage {
@@ -390,7 +409,6 @@
 }
 
 .inquiryDeleteButton {
-  margin-left: auto;
   border: none;
   background: transparent;
   font-family: var(--font-family-base);
@@ -398,6 +416,27 @@
   font-weight: var(--font-weight-medium);
   color: var(--color-gray-400);
   cursor: pointer;
+}
+
+.inquiryActions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.inquiryEditButton {
+  border: none;
+  background: transparent;
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-400);
+  cursor: pointer;
+}
+
+.inquiryEditButton:hover {
+  color: var(--color-black);
+  text-decoration: underline;
 }
 
 .inquiryDeleteButton:hover {
@@ -410,6 +449,127 @@
   font-size: 14px;
   color: var(--color-gray-700);
   margin: 0;
+}
+
+.replyButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-gray-500);
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+.replyButton:hover {
+  color: var(--color-black);
+}
+
+.replyList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  padding-left: 24px;
+}
+
+.replyItem {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.replyArrow {
+  width: 20px;
+  color: var(--color-gray-450);
+  font-size: 20px;
+  line-height: 20px;
+}
+
+.replyAuthor {
+  margin: 0 0 4px;
+  color: var(--color-gray-500);
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+}
+
+.replyContent {
+  margin: 0 0 4px;
+  color: var(--color-gray-700);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+}
+
+.replyForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+  width: 100%;
+  padding-left: 0;
+}
+
+.nestedReplyList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  margin-left: -32px;
+  padding-left: 0;
+}
+
+.replyActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.replyEditForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.legacyReplies {
+  display: none;
+}
+
+.replyItem .replyForm,
+.replyItem .replyEditForm {
+  width: calc(100% + 32px);
+  margin-left: -32px;
+}
+
+.inquiryEditForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.editActionRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cancelButton {
+  height: 40px;
+  padding: 0 20px;
+  border: 1px solid var(--color-black);
+  border-radius: 8px;
+  background: var(--color-white);
+  color: var(--color-black);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
 }
 
 @media (max-width: 1024px) {

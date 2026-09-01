@@ -88,6 +88,97 @@
   height: 24px;
 }
 
+.styles-module__L7HL_W__profileMenu {
+  position: relative;
+}
+
+.styles-module__L7HL_W__profileTrigger {
+  border: 1px solid var(--color-gray-200);
+  background: var(--color-white);
+  min-height: 40px;
+  color: var(--color-black);
+  font: inherit;
+  cursor: pointer;
+  border-radius: 100px;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  display: inline-flex;
+}
+
+.styles-module__L7HL_W__profileAvatar {
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.styles-module__L7HL_W__profileDropdown {
+  z-index: 1;
+  border: 1px solid var(--color-gray-200);
+  background: var(--color-white);
+  border-radius: 12px;
+  width: 248px;
+  padding: 16px;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  box-shadow: 0 8px 24px #0000001f;
+}
+
+.styles-module__L7HL_W__profileMenuTitle {
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 12px;
+}
+
+.styles-module__L7HL_W__avatarGrid {
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+  display: grid;
+}
+
+.styles-module__L7HL_W__avatarOption {
+  cursor: pointer;
+  background: none;
+  border: 2px solid #0000;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+}
+
+.styles-module__L7HL_W__avatarOption img {
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.styles-module__L7HL_W__avatarOptionActive {
+  border-color: var(--color-primary);
+}
+
+.styles-module__L7HL_W__avatarOption:disabled {
+  cursor: wait;
+  opacity: .6;
+}
+
+.styles-module__L7HL_W__profileLink, .styles-module__L7HL_W__logoutButton {
+  border: 0;
+  border-top: 1px solid var(--color-gray-100);
+  width: 100%;
+  color: var(--color-gray-700);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  padding: 10px 0;
+  font-size: 14px;
+  text-decoration: none;
+  display: block;
+}
+
 @media (max-width: 780px) {
   .styles-module__L7HL_W__nav {
     display: none;
@@ -211,10 +302,18 @@
 
 .styles-module___eyqlq__thumbWrap {
   background-color: var(--color-gray-100);
+  cursor: pointer;
+  border: 0;
   border-radius: 8px;
   flex: 1 0 0;
+  padding: 0;
   position: relative;
   overflow: hidden;
+}
+
+.styles-module___eyqlq__thumbWrap:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .styles-module___eyqlq__thumbImage {

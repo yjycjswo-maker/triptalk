@@ -129,6 +129,11 @@
   background: var(--color-primary-dark);
 }
 
+.styles-module__Is7vyq__submitButton:disabled {
+  cursor: not-allowed;
+  opacity: .7;
+}
+
 .styles-module__Is7vyq__loginPrompt {
   color: var(--color-gray-450);
   font-family: var(--font-family-base);

@@ -2,21 +2,47 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useMutation } from "@apollo/client/react";
+import { LOGIN_USER } from "@/graphql/mutations";
 import styles from "./styles.module.css";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+function getLoginErrorMessage(error: unknown) {
+  return error instanceof Error
+    ? error.message
+    : "로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+}
+
+type LoginUserData = {
+  loginUser: {
+    accessToken: string;
+  };
+};
+
+type LoginUserVariables = {
+  email: string;
+  password: string;
+};
+
 export default function LoginForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: false, password: false });
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loginUser, { loading }] = useMutation<
+    LoginUserData,
+    LoginUserVariables
+  >(LOGIN_USER);
 
   const isEmailValid = (value: string) => EMAIL_PATTERN.test(value.trim());
   const isPasswordValid = (value: string) => value.trim().length > 0;
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const nextErrors = {
@@ -31,11 +57,31 @@ export default function LoginForm() {
       return;
     }
 
-    // TODO: 로그인 API 연동
+    setLoginError(null);
+
+    try {
+      const { data } = await loginUser({
+        variables: {
+          email: email.trim(),
+          password,
+        },
+      });
+      const accessToken = data?.loginUser?.accessToken;
+
+      if (!accessToken) {
+        throw new Error("로그인 토큰을 받지 못했습니다.");
+      }
+
+      localStorage.setItem("accessToken", accessToken);
+      router.replace("/trip-talk");
+    } catch (error) {
+      setLoginError(getLoginErrorMessage(error));
+    }
   };
 
   const handleEmailChange = (value: string) => {
     setEmail(value);
+    setLoginError(null);
 
     if (hasSubmitted) {
       setErrors((currentErrors) => ({
@@ -47,6 +93,7 @@ export default function LoginForm() {
 
   const handlePasswordChange = (value: string) => {
     setPassword(value);
+    setLoginError(null);
 
     if (hasSubmitted) {
       setErrors((currentErrors) => ({
@@ -56,7 +103,8 @@ export default function LoginForm() {
     }
   };
 
-  const hasErrors = errors.email || errors.password;
+  const hasErrors = errors.email || errors.password || Boolean(loginError);
+  const errorMessage = loginError ?? "아이디 또는 비밀번호를 확인해 주세요.";
 
   return (
     <div className={styles.wrap}>
@@ -97,12 +145,16 @@ export default function LoginForm() {
 
             {hasErrors && (
               <p id="login-error" className={styles.errorMessage} role="alert">
-                아이디 또는 비밀번호를 확인해 주세요.
+                {errorMessage}
               </p>
             )}
 
-            <button type="submit" className={styles.submitButton}>
-              로그인
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={loading}
+            >
+              {loading ? "로그인 중..." : "로그인"}
             </button>
           </form>
 

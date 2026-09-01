@@ -89,6 +89,98 @@
   height: 24px;
 }
 
+.profileMenu {
+  position: relative;
+}
+
+.profileTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 100px;
+  background: var(--color-white);
+  color: var(--color-black);
+  font: inherit;
+  cursor: pointer;
+}
+
+.profileAvatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profileDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1;
+  width: 248px;
+  padding: 16px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 12px;
+  background: var(--color-white);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+}
+
+.profileMenuTitle {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+}
+
+.avatarGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.avatarOption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.avatarOption img {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatarOptionActive {
+  border-color: var(--color-primary);
+}
+
+.avatarOption:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.profileLink,
+.logoutButton {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  border: 0;
+  border-top: 1px solid var(--color-gray-100);
+  background: transparent;
+  color: var(--color-gray-700);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 @media (max-width: 780px) {
   .nav {
     display: none; /* 모바일은 별도 앱바 스타일 헤더 컴포넌트로 분리 예정 */

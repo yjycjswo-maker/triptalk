@@ -111,14 +111,33 @@
   gap: 8px;
   width: 212px;
   display: flex;
+  overflow: hidden;
 }
 
 .styles-module___eyqlq__thumbWrap {
   background-color: var(--color-gray-100);
+  cursor: pointer;
+  opacity: .45;
+  filter: grayscale(.7);
+  border: 0;
   border-radius: 8px;
-  flex: 1 0 0;
+  flex: 0 0 calc(30.303% - 7.27273px);
+  padding: 0;
+  transition: opacity .16s, filter .16s;
   position: relative;
   overflow: hidden;
+}
+
+.styles-module___eyqlq__thumbWrap:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.styles-module___eyqlq__thumbWrapActive {
+  outline: 3px solid var(--color-primary);
+  outline-offset: -3px;
+  opacity: 1;
+  filter: none;
 }
 
 .styles-module___eyqlq__thumbImage {
@@ -392,7 +411,27 @@
   cursor: pointer;
   background: none;
   border: none;
+}
+
+.styles-module___eyqlq__inquiryActions {
+  gap: 8px;
   margin-left: auto;
+  display: flex;
+}
+
+.styles-module___eyqlq__inquiryEditButton {
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-400);
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.styles-module___eyqlq__inquiryEditButton:hover {
+  color: var(--color-black);
+  text-decoration: underline;
 }
 
 .styles-module___eyqlq__inquiryDeleteButton:hover {
@@ -405,6 +444,126 @@
   color: var(--color-gray-700);
   margin: 0;
   font-size: 14px;
+}
+
+.styles-module___eyqlq__replyButton {
+  color: var(--color-gray-500);
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  background: none;
+  border: 0;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 0;
+  display: inline-flex;
+}
+
+.styles-module___eyqlq__replyButton:hover {
+  color: var(--color-black);
+}
+
+.styles-module___eyqlq__replyList {
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  padding-left: 24px;
+  display: flex;
+}
+
+.styles-module___eyqlq__replyItem {
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 12px;
+  display: grid;
+}
+
+.styles-module___eyqlq__replyArrow {
+  width: 20px;
+  color: var(--color-gray-450);
+  font-size: 20px;
+  line-height: 20px;
+}
+
+.styles-module___eyqlq__replyAuthor {
+  color: var(--color-gray-500);
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 4px;
+}
+
+.styles-module___eyqlq__replyContent {
+  color: var(--color-gray-700);
+  font-family: var(--font-family-base);
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+
+.styles-module___eyqlq__replyForm {
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-top: 16px;
+  padding-left: 0;
+  display: flex;
+}
+
+.styles-module___eyqlq__nestedReplyList {
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  margin-left: -32px;
+  padding-left: 0;
+  display: flex;
+}
+
+.styles-module___eyqlq__replyActions {
+  gap: 8px;
+  margin-top: 8px;
+  display: flex;
+}
+
+.styles-module___eyqlq__replyEditForm {
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  display: flex;
+}
+
+.styles-module___eyqlq__legacyReplies {
+  display: none;
+}
+
+.styles-module___eyqlq__replyItem .styles-module___eyqlq__replyForm, .styles-module___eyqlq__replyItem .styles-module___eyqlq__replyEditForm {
+  width: calc(100% + 32px);
+  margin-left: -32px;
+}
+
+.styles-module___eyqlq__inquiryEditForm {
+  flex-direction: column;
+  gap: 16px;
+  display: flex;
+}
+
+.styles-module___eyqlq__editActionRow {
+  justify-content: flex-end;
+  gap: 8px;
+  display: flex;
+}
+
+.styles-module___eyqlq__cancelButton {
+  border: 1px solid var(--color-black);
+  background: var(--color-white);
+  height: 40px;
+  color: var(--color-black);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 0 20px;
 }
 
 @media (max-width: 1024px) {

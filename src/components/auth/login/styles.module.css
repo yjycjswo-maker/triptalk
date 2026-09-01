@@ -1,7 +1,7 @@
 .wrap {
   display: flex;
   width: 100%;
-  min-height: 100vh; /* 실측: 1920x1080 풀스크린 레이아웃 */
+  min-height: 100vh;
 }
 
 /* 왼쪽 폼 영역 - 실측 W484 근사 (좌측 컬럼 고정폭) */
@@ -10,8 +10,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 484px; /* 실측 */
-  padding: 40px; /* 실측: 좌우 여백 40px 근사 */
+  width: 484px;
+  padding: 40px;
 }
 
 .formInner {
@@ -93,7 +93,7 @@
   margin-top: 8px;
   border: none;
   border-radius: 8px;
-  background: var(--color-primary); /* #2974e5 */
+  background: var(--color-primary);
   color: var(--color-white);
   font-family: var(--font-family-base);
   font-size: 15px;
@@ -103,6 +103,11 @@
 
 .submitButton:hover {
   background: var(--color-primary-dark);
+}
+
+.submitButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .signupLink {
