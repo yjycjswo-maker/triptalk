@@ -44,3 +44,40 @@ export const FETCH_USER_LOGGED_IN = gql`
     }
   }
 `;
+
+export const FETCH_TRAVELPRODUCT_QUESTIONS = gql`
+  query FetchTravelproductQuestions($travelproductId: ID!, $page: Int) {
+    fetchTravelproductQuestions(
+      travelproductId: $travelproductId
+      page: $page
+    ) {
+      _id
+      contents
+      createdAt
+      user {
+        _id
+        name
+      }
+    }
+  }
+`;
+
+export const FETCH_TRAVELPRODUCT_QUESTION_ANSWERS = gql`
+  query FetchTravelproductQuestionAnswers(
+    $travelproductQuestionId: ID!
+    $page: Int
+  ) {
+    fetchTravelproductQuestionAnswers(
+      travelproductQuestionId: $travelproductQuestionId
+      page: $page
+    ) {
+      _id
+      contents
+      createdAt
+      user {
+        _id
+        name
+      }
+    }
+  }
+`;

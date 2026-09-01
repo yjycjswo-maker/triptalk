@@ -15,14 +15,14 @@ const NAV_ITEMS = [
   { label: "마이 페이지", href: "/my-page" },
 ];
 
-const DEFAULT_AVATAR = "/img/profile/img.png";
+const DEFAULT_AVATAR = "/img/profile/img-5.png";
 const AVATARS = [
   DEFAULT_AVATAR,
+  "/img/profile/img.png",
   "/img/profile/img-1.png",
   "/img/profile/img-2.png",
   "/img/profile/img-3.png",
   "/img/profile/img-4.png",
-  "/img/profile/img-5.png",
   "/img/profile/img-6.png",
   "/img/profile/img-7.png",
   "/img/profile/img-8.png",

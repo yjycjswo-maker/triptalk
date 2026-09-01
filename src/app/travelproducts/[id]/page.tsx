@@ -1,13 +1,19 @@
 import Header from "@/components/commons/header";
 import StayDetail from "@/components/travelproducts/detail";
 
-// TODO: 실제로는 params.id로 API 조회
-export default function StayDetailPage() {
+export default async function StayDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
   return (
     <>
       <Header />
       <main>
         <StayDetail
+          travelproductId={id}
           title="포항 : 숙박권 명이 여기에 들어갑니다"
           subtitle="모던한 분위기의 감도높은 숙소"
           tags={["6인 이하", "건식 사우나", "매건동판 가능"]}

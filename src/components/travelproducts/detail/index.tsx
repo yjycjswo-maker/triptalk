@@ -1,38 +1,40 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@apollo/client/react";
 import OpenStreetMap from "@/components/ui/open-street-map";
+import {
+  FETCH_TRAVELPRODUCT_QUESTIONS,
+  FETCH_TRAVELPRODUCT_QUESTION_ANSWERS,
+} from "@/graphql/queries";
+import {
+  CREATE_TRAVELPRODUCT_QUESTION,
+  CREATE_TRAVELPRODUCT_QUESTION_ANSWER,
+  DELETE_TRAVELPRODUCT_QUESTION,
+  DELETE_TRAVELPRODUCT_QUESTION_ANSWER,
+  UPDATE_TRAVELPRODUCT_QUESTION,
+  UPDATE_TRAVELPRODUCT_QUESTION_ANSWER,
+} from "@/graphql/mutations";
 import styles from "./styles.module.css";
 
-interface Reply {
-  id: number;
-  content: string;
-  date: string;
-  replies: Reply[];
+interface ApiUser {
+  _id: string;
+  name: string;
 }
 
-interface Inquiry {
-  id: number;
-  content: string;
-  date: string;
-  replies: Reply[];
+interface ApiQuestion {
+  _id: string;
+  contents: string;
+  createdAt: string;
+  user: ApiUser;
+  answers?: ApiAnswer[];
 }
 
-type ReplyTarget = {
-  inquiryId: number;
-  replyPath: number[];
-  parentReplyId?: number;
-};
-
-type ReplyEditTarget = {
-  inquiryId: number;
-  replyPath: number[];
-  replyId?: number;
-  nestedReplyId?: number;
-};
+type ApiAnswer = ApiQuestion;
 
 interface StayDetailProps {
+  travelproductId: string;
   title: string;
   subtitle: string;
   tags: string[];
@@ -46,59 +48,12 @@ interface StayDetailProps {
   coordinates: { latitude: number; longitude: number };
 }
 
-function formatToday() {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, "0");
-  const d = String(now.getDate()).padStart(2, "0");
-  return `${y}.${m}.${d}`;
-}
-
-function addReplyAtPath(replies: Reply[], path: number[], newReply: Reply): Reply[] {
-  const [replyId, ...remainingPath] = path;
-
-  return replies.map((reply) =>
-    reply.id !== replyId
-      ? reply
-      : remainingPath.length === 0
-        ? { ...reply, replies: [...reply.replies, newReply] }
-        : {
-            ...reply,
-            replies: addReplyAtPath(reply.replies, remainingPath, newReply),
-          },
-  );
-}
-
-function updateReplyAtPath(replies: Reply[], path: number[], content: string): Reply[] {
-  const [replyId, ...remainingPath] = path;
-
-  return replies.map((reply) =>
-    reply.id !== replyId
-      ? reply
-      : remainingPath.length === 0
-        ? { ...reply, content }
-        : {
-            ...reply,
-            replies: updateReplyAtPath(reply.replies, remainingPath, content),
-          },
-  );
-}
-
-function deleteReplyAtPath(replies: Reply[], path: number[]): Reply[] {
-  const [replyId, ...remainingPath] = path;
-
-  if (remainingPath.length === 0) {
-    return replies.filter((reply) => reply.id !== replyId);
-  }
-
-  return replies.map((reply) =>
-    reply.id === replyId
-      ? {
-          ...reply,
-          replies: deleteReplyAtPath(reply.replies, remainingPath),
-        }
-      : reply,
-  );
+function formatDate(value: string) {
+  return new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(value));
 }
 
 type ReplyEditorProps = {
@@ -134,61 +89,51 @@ function ReplyEditor({ label, value, onChange, onCancel, onSubmit }: ReplyEditor
   );
 }
 
-type ReplyListProps = {
-  replies: Reply[];
-  inquiryId: number;
-  parentPath?: number[];
-  nested?: boolean;
-  replyingTarget: ReplyTarget | null;
-  replyText: string;
-  editingTarget: ReplyEditTarget | null;
+type AnswerListProps = {
+  questionId: string;
+  isTemporaryProduct: boolean;
+  temporaryAnswers?: ApiAnswer[];
+  editingAnswerId: string | null;
   editingText: string;
-  onStartReply: (inquiryId: number, path: number[]) => void;
-  onChangeReplyText: (value: string) => void;
-  onCancelReply: () => void;
-  onSubmitReply: (event: React.FormEvent) => void;
-  onStartEdit: (inquiryId: number, path: number[], content: string) => void;
+  onStartEdit: (answer: ApiAnswer) => void;
   onChangeEditText: (value: string) => void;
   onCancelEdit: () => void;
   onSubmitEdit: (event: React.FormEvent) => void;
-  onDelete: (inquiryId: number, path: number[]) => void;
+  onDelete: (answerId: string) => void;
 };
 
-function ReplyList({
-  replies,
-  inquiryId,
-  parentPath = [],
-  nested = false,
-  replyingTarget,
-  replyText,
-  editingTarget,
+function AnswerList({
+  questionId,
+  isTemporaryProduct,
+  temporaryAnswers = [],
+  editingAnswerId,
   editingText,
-  onStartReply,
-  onChangeReplyText,
-  onCancelReply,
-  onSubmitReply,
   onStartEdit,
   onChangeEditText,
   onCancelEdit,
   onSubmitEdit,
   onDelete,
-}: ReplyListProps) {
-  return (
-    <div className={nested ? styles.nestedReplyList : styles.replyList}>
-      {replies.map((reply) => {
-        const replyPath = [...parentPath, reply.id];
-        const isEditing =
-          editingTarget?.inquiryId === inquiryId &&
-          editingTarget.replyPath.join(",") === replyPath.join(",");
-        const isReplying =
-          replyingTarget?.inquiryId === inquiryId &&
-          replyingTarget.replyPath.join(",") === replyPath.join(",");
+}: AnswerListProps) {
+  const { data, loading, error } = useQuery<{
+    fetchTravelproductQuestionAnswers: ApiAnswer[];
+  }>(FETCH_TRAVELPRODUCT_QUESTION_ANSWERS, {
+    variables: { travelproductQuestionId: questionId, page: 1 },
+    skip: isTemporaryProduct,
+  });
+  const answers = isTemporaryProduct
+    ? temporaryAnswers
+    : data?.fetchTravelproductQuestionAnswers ?? [];
 
-        return (
-          <div key={reply.id} className={styles.replyItem}>
+  if (!isTemporaryProduct && loading) return <p className={styles.emptyState}>답변을 불러오는 중입니다.</p>;
+  if (!isTemporaryProduct && error) return <p className={styles.emptyState}>답변을 불러오지 못했습니다.</p>;
+
+  return (
+    <div className={styles.replyList}>
+      {answers.map((answer) => (
+          <div key={answer._id} className={styles.replyItem}>
             <span className={styles.replyArrow} aria-hidden>↳</span>
             <div>
-              {isEditing ? (
+              {editingAnswerId === answer._id ? (
                 <ReplyEditor
                   label="수정 하기"
                   value={editingText}
@@ -198,74 +143,32 @@ function ReplyList({
                 />
               ) : (
                 <>
-                  <p className={styles.replyAuthor}>답변</p>
-                  <p className={styles.replyContent}>{reply.content}</p>
-                  <span className={styles.inquiryItemDate}>{reply.date}</span>
+                  <p className={styles.replyAuthor}>{answer.user.name}</p>
+                  <p className={styles.replyContent}>{answer.contents}</p>
+                  <span className={styles.inquiryItemDate}>{formatDate(answer.createdAt)}</span>
                   <div className={styles.replyActions}>
                     <button
                       type="button"
                       className={styles.inquiryEditButton}
-                      onClick={() => onStartEdit(inquiryId, replyPath, reply.content)}
+                      onClick={() => onStartEdit(answer)}
                     >수정</button>
                     <button
                       type="button"
                       className={styles.inquiryDeleteButton}
-                      onClick={() => onDelete(inquiryId, replyPath)}
+                      onClick={() => onDelete(answer._id)}
                     >삭제</button>
                   </div>
-                  <button
-                    type="button"
-                    className={styles.replyButton}
-                    onClick={() => onStartReply(inquiryId, replyPath)}
-                  >
-                    <Image src="/icon/shape/outline/reply.svg" alt="" width={18} height={18} />
-                    답변 하기
-                  </button>
                 </>
-              )}
-
-              {reply.replies.length > 0 && (
-                <ReplyList
-                  {...{
-                    replies: reply.replies,
-                    inquiryId,
-                    parentPath: replyPath,
-                    nested: true,
-                    replyingTarget,
-                    replyText,
-                    editingTarget,
-                    editingText,
-                    onStartReply,
-                    onChangeReplyText,
-                    onCancelReply,
-                    onSubmitReply,
-                    onStartEdit,
-                    onChangeEditText,
-                    onCancelEdit,
-                    onSubmitEdit,
-                    onDelete,
-                  }}
-                />
-              )}
-
-              {isReplying && (
-                <ReplyEditor
-                  label="답변 하기"
-                  value={replyText}
-                  onChange={onChangeReplyText}
-                  onCancel={onCancelReply}
-                  onSubmit={onSubmitReply}
-                />
               )}
             </div>
           </div>
-        );
-      })}
+      ))}
     </div>
   );
 }
 
 export default function StayDetail({
+  travelproductId,
   title,
   subtitle,
   tags,
@@ -278,44 +181,138 @@ export default function StayDetail({
   address,
   coordinates,
 }: StayDetailProps) {
-  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const isTemporaryProduct = /^\d+$/.test(travelproductId);
+  const localStorageKey = `triptalk:temporary-inquiries:${travelproductId}`;
+  const [temporaryInquiries, setTemporaryInquiries] = useState<ApiQuestion[]>([]);
+  const [isTemporaryDataReady, setIsTemporaryDataReady] = useState(false);
   const [inquiryText, setInquiryText] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [editingInquiryId, setEditingInquiryId] = useState<number | null>(null);
+  const [editingInquiryId, setEditingInquiryId] = useState<string | null>(null);
   const [editingInquiryText, setEditingInquiryText] = useState("");
-  const [replyingTarget, setReplyingTarget] = useState<ReplyTarget | null>(null);
+  const [replyingQuestionId, setReplyingQuestionId] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
-  const [editingReplyTarget, setEditingReplyTarget] =
-    useState<ReplyEditTarget | null>(null);
+  const [editingAnswerId, setEditingAnswerId] = useState<string | null>(null);
   const [editingReplyText, setEditingReplyText] = useState("");
+  const [inquiryError, setInquiryError] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
 
-  const canSubmit = Boolean(inquiryText.trim()) && !isSubmitting;
+  const { data, loading: isLoadingInquiries, error: inquiryQueryError } = useQuery<{
+    fetchTravelproductQuestions: ApiQuestion[];
+  }>(FETCH_TRAVELPRODUCT_QUESTIONS, {
+    variables: { travelproductId, page: 1 },
+    skip: isTemporaryProduct,
+  });
+  const inquiries = isTemporaryProduct
+    ? temporaryInquiries
+    : data?.fetchTravelproductQuestions ?? [];
 
-  const handleSubmitInquiry = (event: React.FormEvent) => {
+  useEffect(() => {
+    if (!isTemporaryProduct) return;
+
+    let isCancelled = false;
+    queueMicrotask(() => {
+      if (isCancelled) return;
+      try {
+        const saved = localStorage.getItem(localStorageKey);
+        setTemporaryInquiries(saved ? JSON.parse(saved) : []);
+      } catch {
+        setTemporaryInquiries([]);
+      } finally {
+        setIsTemporaryDataReady(true);
+      }
+    });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [isTemporaryProduct, localStorageKey]);
+
+  const updateTemporaryInquiries = (
+    updater: (current: ApiQuestion[]) => ApiQuestion[],
+  ) => {
+    setTemporaryInquiries((current) => {
+      const next = updater(current);
+      localStorage.setItem(localStorageKey, JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const [createQuestion, { loading: isSubmitting }] = useMutation(
+    CREATE_TRAVELPRODUCT_QUESTION,
+    { refetchQueries: ["FetchTravelproductQuestions"] },
+  );
+  const [updateQuestion] = useMutation(UPDATE_TRAVELPRODUCT_QUESTION, {
+    refetchQueries: ["FetchTravelproductQuestions"],
+  });
+  const [deleteQuestion] = useMutation(DELETE_TRAVELPRODUCT_QUESTION, {
+    refetchQueries: ["FetchTravelproductQuestions"],
+  });
+  const [createAnswer] = useMutation(CREATE_TRAVELPRODUCT_QUESTION_ANSWER, {
+    refetchQueries: ["FetchTravelproductQuestionAnswers"],
+  });
+  const [updateAnswer] = useMutation(UPDATE_TRAVELPRODUCT_QUESTION_ANSWER, {
+    refetchQueries: ["FetchTravelproductQuestionAnswers"],
+  });
+  const [deleteAnswer] = useMutation(DELETE_TRAVELPRODUCT_QUESTION_ANSWER, {
+    refetchQueries: ["FetchTravelproductQuestionAnswers"],
+  });
+
+  const canSubmit =
+    Boolean(inquiryText.trim()) && (isTemporaryProduct || !isSubmitting);
+
+  const handleSubmitInquiry = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!canSubmit) return;
 
-    setIsSubmitting(true);
-    const newInquiry: Inquiry = {
-      id: Date.now(),
-      content: inquiryText.trim(),
-      date: formatToday(),
-      replies: [],
-    };
-    setInquiries((prev) => [newInquiry, ...prev]);
-    setInquiryText("");
-    setIsSubmitting(false);
+    if (isTemporaryProduct) {
+      const now = new Date().toISOString();
+      updateTemporaryInquiries((current) => [
+        {
+          _id: `temporary-question-${Date.now()}`,
+          contents: inquiryText.trim(),
+          createdAt: now,
+          user: { _id: "temporary-user", name: "임시 사용자" },
+          answers: [],
+        },
+        ...current,
+      ]);
+      setInquiryText("");
+      return;
+    }
+
+    try {
+      setInquiryError("");
+      await createQuestion({
+        variables: {
+          travelproductId,
+          input: { contents: inquiryText.trim() },
+        },
+      });
+      setInquiryText("");
+    } catch (error) {
+      setInquiryError(error instanceof Error ? error.message : "문의 등록에 실패했습니다.");
+    }
   };
 
-  const handleDeleteInquiry = (id: number) => {
-    setInquiries((prev) => prev.filter((i) => i.id !== id));
+  const handleDeleteInquiry = async (id: string) => {
+    if (!window.confirm("문의를 삭제할까요?")) return;
+    if (isTemporaryProduct) {
+      updateTemporaryInquiries((current) =>
+        current.filter((question) => question._id !== id),
+      );
+      return;
+    }
+    try {
+      setInquiryError("");
+      await deleteQuestion({ variables: { travelproductQuestionId: id } });
+    } catch (error) {
+      setInquiryError(error instanceof Error ? error.message : "문의 삭제에 실패했습니다.");
+    }
   };
 
-  const handleStartEditInquiry = (inquiry: Inquiry) => {
-    setEditingInquiryId(inquiry.id);
-    setEditingInquiryText(inquiry.content);
+  const handleStartEditInquiry = (inquiry: ApiQuestion) => {
+    setEditingInquiryId(inquiry._id);
+    setEditingInquiryText(inquiry.contents);
   };
 
   const handleCancelEditInquiry = () => {
@@ -323,128 +320,146 @@ export default function StayDetail({
     setEditingInquiryText("");
   };
 
-  const handleSaveEditInquiry = (event: React.FormEvent, id: number) => {
+  const handleSaveEditInquiry = async (event: React.FormEvent, id: string) => {
     event.preventDefault();
-    const content = editingInquiryText.trim();
-
-    if (!content) return;
-
-    setInquiries((prev) =>
-      prev.map((inquiry) =>
-        inquiry.id === id ? { ...inquiry, content } : inquiry,
-      ),
-    );
-    handleCancelEditInquiry();
+    if (!editingInquiryText.trim()) return;
+    if (isTemporaryProduct) {
+      updateTemporaryInquiries((current) =>
+        current.map((question) =>
+          question._id === id
+            ? { ...question, contents: editingInquiryText.trim() }
+            : question,
+        ),
+      );
+      handleCancelEditInquiry();
+      return;
+    }
+    try {
+      setInquiryError("");
+      await updateQuestion({
+        variables: {
+          travelproductQuestionId: id,
+          input: { contents: editingInquiryText.trim() },
+        },
+      });
+      handleCancelEditInquiry();
+    } catch (error) {
+      setInquiryError(error instanceof Error ? error.message : "문의 수정에 실패했습니다.");
+    }
   };
 
-  const handleStartReply = (inquiryId: number, replyPath: number[] | number = []) => {
-    setReplyingTarget({
-      inquiryId,
-      replyPath: Array.isArray(replyPath) ? replyPath : [replyPath],
-    });
+  const handleStartReply = (questionId: string) => {
+    setReplyingQuestionId(questionId);
     setReplyText("");
   };
 
   const handleCancelReply = () => {
-    setReplyingTarget(null);
+    setReplyingQuestionId(null);
     setReplyText("");
   };
 
-  const handleSubmitReply = (event: React.FormEvent) => {
+  const handleSubmitReply = async (event: React.FormEvent) => {
     event.preventDefault();
-    const content = replyText.trim();
-
-    if (!content || !replyingTarget) return;
-
-    const reply: Reply = {
-      id: Date.now(),
-      content,
-      date: formatToday(),
-      replies: [],
-    };
-
-    setInquiries((prev) =>
-      prev.map((inquiry) =>
-        inquiry.id !== replyingTarget.inquiryId
-          ? inquiry
-          : replyingTarget.replyPath.length === 0
-            ? { ...inquiry, replies: [...inquiry.replies, reply] }
-            : {
-                ...inquiry,
-                replies: addReplyAtPath(
-                  inquiry.replies,
-                  replyingTarget.replyPath,
-                  reply,
-                ),
-              },
-      ),
-    );
-    handleCancelReply();
+    if (!replyText.trim() || !replyingQuestionId) return;
+    if (isTemporaryProduct) {
+      const questionId = replyingQuestionId;
+      updateTemporaryInquiries((current) =>
+        current.map((question) =>
+          question._id === questionId
+            ? {
+                ...question,
+                answers: [
+                  ...(question.answers ?? []),
+                  {
+                    _id: `temporary-answer-${Date.now()}`,
+                    contents: replyText.trim(),
+                    createdAt: new Date().toISOString(),
+                    user: { _id: "temporary-user", name: "임시 사용자" },
+                  },
+                ],
+              }
+            : question,
+        ),
+      );
+      handleCancelReply();
+      return;
+    }
+    try {
+      setInquiryError("");
+      await createAnswer({
+        variables: {
+          travelproductQuestionId: replyingQuestionId,
+          input: { contents: replyText.trim() },
+        },
+      });
+      handleCancelReply();
+    } catch (error) {
+      setInquiryError(error instanceof Error ? error.message : "답변 등록에 실패했습니다.");
+    }
   };
 
-  const handleStartEditReply = (
-    inquiryId: number,
-    replyPath: number[] | number,
-    content: string,
-    nestedReplyId?: number,
-  ) => {
-    const normalizedPath = Array.isArray(replyPath)
-      ? replyPath
-      : nestedReplyId === undefined
-        ? [replyPath]
-        : [replyPath, nestedReplyId];
-    setEditingReplyTarget({ inquiryId, replyPath: normalizedPath });
-    setEditingReplyText(content);
+  const handleStartEditReply = (answer: ApiAnswer) => {
+    setEditingAnswerId(answer._id);
+    setEditingReplyText(answer.contents);
   };
 
   const handleCancelEditReply = () => {
-    setEditingReplyTarget(null);
+    setEditingAnswerId(null);
     setEditingReplyText("");
   };
 
-  const handleSaveEditReply = (event: React.FormEvent) => {
+  const handleSaveEditReply = async (event: React.FormEvent) => {
     event.preventDefault();
-    const content = editingReplyText.trim();
-
-    if (!content || !editingReplyTarget) return;
-
-    setInquiries((prev) =>
-      prev.map((inquiry) => {
-        if (inquiry.id !== editingReplyTarget.inquiryId) return inquiry;
-
-        return {
-          ...inquiry,
-          replies: updateReplyAtPath(
-            inquiry.replies,
-            editingReplyTarget.replyPath,
-            content,
+    if (!editingReplyText.trim() || !editingAnswerId) return;
+    if (isTemporaryProduct) {
+      updateTemporaryInquiries((current) =>
+        current.map((question) => ({
+          ...question,
+          answers: (question.answers ?? []).map((answer) =>
+            answer._id === editingAnswerId
+              ? { ...answer, contents: editingReplyText.trim() }
+              : answer,
           ),
-        };
-      }),
-    );
-    handleCancelEditReply();
+        })),
+      );
+      handleCancelEditReply();
+      return;
+    }
+    try {
+      setInquiryError("");
+      await updateAnswer({
+        variables: {
+          travelproductQuestionAnswerId: editingAnswerId,
+          input: { contents: editingReplyText.trim() },
+        },
+      });
+      handleCancelEditReply();
+    } catch (error) {
+      setInquiryError(error instanceof Error ? error.message : "답변 수정에 실패했습니다.");
+    }
   };
 
-  const handleDeleteReply = (
-    inquiryId: number,
-    replyPath: number[] | number,
-    nestedReplyId?: number,
-  ) => {
-    const normalizedPath = Array.isArray(replyPath)
-      ? replyPath
-      : nestedReplyId === undefined
-        ? [replyPath]
-        : [replyPath, nestedReplyId];
-    setInquiries((prev) =>
-      prev.map((inquiry) => {
-        if (inquiry.id !== inquiryId) return inquiry;
-
-        return {
-          ...inquiry,
-          replies: deleteReplyAtPath(inquiry.replies, normalizedPath),
-        };
-      }),
-    );
+  const handleDeleteReply = async (answerId: string) => {
+    if (!window.confirm("답변을 삭제할까요?")) return;
+    if (isTemporaryProduct) {
+      updateTemporaryInquiries((current) =>
+        current.map((question) => ({
+          ...question,
+          answers: (question.answers ?? []).filter(
+            (answer) => answer._id !== answerId,
+          ),
+        })),
+      );
+      return;
+    }
+    try {
+      setInquiryError("");
+      await deleteAnswer({
+        variables: { travelproductQuestionAnswerId: answerId },
+      });
+    } catch (error) {
+      setInquiryError(error instanceof Error ? error.message : "답변 삭제에 실패했습니다.");
+    }
   };
 
   const mainImage = images[selectedImageIndex];
@@ -721,16 +736,32 @@ export default function StayDetail({
             </div>
           </form>
 
+          {inquiryError && (
+            <p className={styles.emptyState}>{inquiryError}</p>
+          )}
+          {isTemporaryProduct && (
+            <p className={styles.emptyState}>
+              임시 문의는 현재 브라우저에만 저장됩니다.
+            </p>
+          )}
+
           <div className={styles.inquiryList}>
-            {inquiries.length === 0 ? (
+            {(isTemporaryProduct && !isTemporaryDataReady) ||
+            (!isTemporaryProduct && isLoadingInquiries) ? (
+              <p className={styles.emptyState}>문의사항을 불러오는 중입니다.</p>
+            ) : !isTemporaryProduct && inquiryQueryError ? (
+              <p className={styles.emptyState}>
+                문의사항을 불러오지 못했습니다. 실제 여행상품 ID인지 확인해 주세요.
+              </p>
+            ) : inquiries.length === 0 ? (
               <p className={styles.emptyState}>등록된 문의사항이 없습니다.</p>
             ) : (
               inquiries.map((item) => (
-                <div key={item.id} className={styles.inquiryItem}>
-                  {editingInquiryId === item.id ? (
+                <div key={item._id} className={styles.inquiryItem}>
+                  {editingInquiryId === item._id ? (
                     <form
                       className={styles.inquiryEditForm}
-                      onSubmit={(event) => handleSaveEditInquiry(event, item.id)}
+                      onSubmit={(event) => handleSaveEditInquiry(event, item._id)}
                     >
                       <div className={styles.textareaWrap}>
                         <textarea
@@ -763,7 +794,12 @@ export default function StayDetail({
                   ) : (
                     <>
                       <div className={styles.inquiryItemHeader}>
-                        <span className={styles.inquiryItemDate}>{item.date}</span>
+                        <div>
+                          <p className={styles.replyAuthor}>{item.user.name}</p>
+                          <span className={styles.inquiryItemDate}>
+                            {formatDate(item.createdAt)}
+                          </span>
+                        </div>
                         <div className={styles.inquiryActions}>
                           <button
                             type="button"
@@ -775,17 +811,17 @@ export default function StayDetail({
                           <button
                             type="button"
                             className={styles.inquiryDeleteButton}
-                            onClick={() => handleDeleteInquiry(item.id)}
+                            onClick={() => handleDeleteInquiry(item._id)}
                           >
                             삭제
                           </button>
                         </div>
                       </div>
-                      <p className={styles.inquiryItemContent}>{item.content}</p>
+                      <p className={styles.inquiryItemContent}>{item.contents}</p>
                       <button
                         type="button"
                         className={styles.replyButton}
-                        onClick={() => handleStartReply(item.id)}
+                        onClick={() => handleStartReply(item._id)}
                       >
                         <Image
                           src="/icon/shape/outline/reply.svg"
@@ -796,307 +832,30 @@ export default function StayDetail({
                         답변 하기
                       </button>
 
-                      {item.replies.length > 0 && (
-                        <ReplyList
-                          replies={item.replies}
-                          inquiryId={item.id}
-                          replyingTarget={replyingTarget}
-                          replyText={replyText}
-                          editingTarget={editingReplyTarget}
-                          editingText={editingReplyText}
-                          onStartReply={handleStartReply}
-                          onChangeReplyText={setReplyText}
-                          onCancelReply={handleCancelReply}
-                          onSubmitReply={handleSubmitReply}
-                          onStartEdit={handleStartEditReply}
-                          onChangeEditText={setEditingReplyText}
-                          onCancelEdit={handleCancelEditReply}
-                          onSubmitEdit={handleSaveEditReply}
-                          onDelete={handleDeleteReply}
+                      <AnswerList
+                        questionId={item._id}
+                        isTemporaryProduct={isTemporaryProduct}
+                        temporaryAnswers={item.answers}
+                        editingAnswerId={editingAnswerId}
+                        editingText={editingReplyText}
+                        onStartEdit={handleStartEditReply}
+                        onChangeEditText={setEditingReplyText}
+                        onCancelEdit={handleCancelEditReply}
+                        onSubmitEdit={handleSaveEditReply}
+                        onDelete={handleDeleteReply}
+                      />
+
+                      {replyingQuestionId === item._id && (
+                        <ReplyEditor
+                          label="답변 하기"
+                          value={replyText}
+                          onChange={setReplyText}
+                          onCancel={handleCancelReply}
+                          onSubmit={handleSubmitReply}
                         />
                       )}
-
-                      {replyingTarget?.inquiryId === item.id &&
-                        replyingTarget.replyPath.length === 0 && (
-                          <ReplyEditor
-                            label="답변 하기"
-                            value={replyText}
-                            onChange={setReplyText}
-                            onCancel={handleCancelReply}
-                            onSubmit={handleSubmitReply}
-                          />
-                        )}
-
-                      <div className={styles.legacyReplies}>
-                      {item.replies.length > 0 && (
-                        <div className={styles.replyList}>
-                          {item.replies.map((reply) => (
-                            <div key={reply.id} className={styles.replyItem}>
-                              <span className={styles.replyArrow} aria-hidden>
-                                ↳
-                              </span>
-                              <div>
-                                {editingReplyTarget?.inquiryId === item.id &&
-                                editingReplyTarget.replyId === reply.id &&
-                                editingReplyTarget.nestedReplyId === undefined ? (
-                                  <form
-                                    className={styles.replyEditForm}
-                                    onSubmit={handleSaveEditReply}
-                                  >
-                                    <div className={styles.textareaWrap}>
-                                      <textarea
-                                        aria-label="답변 내용 수정"
-                                        maxLength={100}
-                                        value={editingReplyText}
-                                        onChange={(event) =>
-                                          setEditingReplyText(event.target.value)
-                                        }
-                                      />
-                                      <span className={styles.charCount}>
-                                        {editingReplyText.length}/100
-                                      </span>
-                                    </div>
-                                    <div className={styles.editActionRow}>
-                                      <button
-                                        type="button"
-                                        className={styles.cancelButton}
-                                        onClick={handleCancelEditReply}
-                                      >
-                                        취소
-                                      </button>
-                                      <button
-                                        type="submit"
-                                        className={styles.submitButton}
-                                        disabled={!editingReplyText.trim()}
-                                      >
-                                        수정 하기
-                                      </button>
-                                    </div>
-                                  </form>
-                                ) : (
-                                  <>
-                                    <p className={styles.replyAuthor}>답변</p>
-                                    <p className={styles.replyContent}>{reply.content}</p>
-                                    <span className={styles.inquiryItemDate}>
-                                      {reply.date}
-                                    </span>
-                                    <div className={styles.replyActions}>
-                                      <button
-                                        type="button"
-                                        className={styles.inquiryEditButton}
-                                        onClick={() =>
-                                          handleStartEditReply(
-                                            item.id,
-                                            reply.id,
-                                            reply.content,
-                                          )
-                                        }
-                                      >
-                                        수정
-                                      </button>
-                                      <button
-                                        type="button"
-                                        className={styles.inquiryDeleteButton}
-                                        onClick={() =>
-                                          handleDeleteReply(item.id, reply.id)
-                                        }
-                                      >
-                                        삭제
-                                      </button>
-                                    </div>
-                                    <button
-                                      type="button"
-                                      className={styles.replyButton}
-                                      onClick={() => handleStartReply(item.id, reply.id)}
-                                    >
-                                      <Image
-                                        src="/icon/shape/outline/reply.svg"
-                                        alt=""
-                                        width={18}
-                                        height={18}
-                                      />
-                                      답변 하기
-                                    </button>
-                                  </>
-                                )}
-
-                                {reply.replies.length > 0 && (
-                                  <div className={styles.nestedReplyList}>
-                                    {reply.replies.map((nestedReply) => (
-                                      <div
-                                        key={nestedReply.id}
-                                        className={styles.replyItem}
-                                      >
-                                        <span className={styles.replyArrow} aria-hidden>
-                                          ↳
-                                        </span>
-                                        <div>
-                                          {editingReplyTarget?.inquiryId === item.id &&
-                                          editingReplyTarget.replyId === reply.id &&
-                                          editingReplyTarget.nestedReplyId ===
-                                            nestedReply.id ? (
-                                            <form
-                                              className={styles.replyEditForm}
-                                              onSubmit={handleSaveEditReply}
-                                            >
-                                              <div className={styles.textareaWrap}>
-                                                <textarea
-                                                  aria-label="답변 내용 수정"
-                                                  maxLength={100}
-                                                  value={editingReplyText}
-                                                  onChange={(event) =>
-                                                    setEditingReplyText(event.target.value)
-                                                  }
-                                                />
-                                                <span className={styles.charCount}>
-                                                  {editingReplyText.length}/100
-                                                </span>
-                                              </div>
-                                              <div className={styles.editActionRow}>
-                                                <button
-                                                  type="button"
-                                                  className={styles.cancelButton}
-                                                  onClick={handleCancelEditReply}
-                                                >
-                                                  취소
-                                                </button>
-                                                <button
-                                                  type="submit"
-                                                  className={styles.submitButton}
-                                                  disabled={!editingReplyText.trim()}
-                                                >
-                                                  수정 하기
-                                                </button>
-                                              </div>
-                                            </form>
-                                          ) : (
-                                            <>
-                                              <p className={styles.replyAuthor}>답변</p>
-                                              <p className={styles.replyContent}>
-                                                {nestedReply.content}
-                                              </p>
-                                              <span className={styles.inquiryItemDate}>
-                                                {nestedReply.date}
-                                              </span>
-                                              <div className={styles.replyActions}>
-                                                <button
-                                                  type="button"
-                                                  className={styles.inquiryEditButton}
-                                                  onClick={() =>
-                                                    handleStartEditReply(
-                                                      item.id,
-                                                      reply.id,
-                                                      nestedReply.content,
-                                                      nestedReply.id,
-                                                    )
-                                                  }
-                                                >
-                                                  수정
-                                                </button>
-                                                <button
-                                                  type="button"
-                                                  className={styles.inquiryDeleteButton}
-                                                  onClick={() =>
-                                                    handleDeleteReply(
-                                                      item.id,
-                                                      reply.id,
-                                                      nestedReply.id,
-                                                    )
-                                                  }
-                                                >
-                                                  삭제
-                                                </button>
-                                              </div>
-                                            </>
-                                          )}
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                )}
-
-                                {replyingTarget?.inquiryId === item.id &&
-                                  replyingTarget.parentReplyId === reply.id && (
-                                    <form
-                                      className={styles.replyForm}
-                                      onSubmit={handleSubmitReply}
-                                    >
-                                      <div className={styles.textareaWrap}>
-                                        <textarea
-                                          aria-label="답변에 대한 답변 입력"
-                                          placeholder="답변할 내용을 입력해 주세요."
-                                          maxLength={100}
-                                          value={replyText}
-                                          onChange={(event) =>
-                                            setReplyText(event.target.value)
-                                          }
-                                        />
-                                        <span className={styles.charCount}>
-                                          {replyText.length}/100
-                                        </span>
-                                      </div>
-                                      <div className={styles.editActionRow}>
-                                        <button
-                                          type="button"
-                                          className={styles.cancelButton}
-                                          onClick={handleCancelReply}
-                                        >
-                                          취소
-                                        </button>
-                                        <button
-                                          type="submit"
-                                          className={styles.submitButton}
-                                          disabled={!replyText.trim()}
-                                        >
-                                          답변 하기
-                                        </button>
-                                      </div>
-                                    </form>
-                                  )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {replyingTarget?.inquiryId === item.id &&
-                        replyingTarget.parentReplyId === undefined && (
-                        <form
-                          className={styles.replyForm}
-                          onSubmit={handleSubmitReply}
-                        >
-                          <div className={styles.textareaWrap}>
-                            <textarea
-                              aria-label="답변 내용 입력"
-                              placeholder="답변할 내용을 입력해 주세요."
-                              maxLength={100}
-                              value={replyText}
-                              onChange={(event) => setReplyText(event.target.value)}
-                            />
-                            <span className={styles.charCount}>{replyText.length}/100</span>
-                          </div>
-                          <div className={styles.editActionRow}>
-                            <button
-                              type="button"
-                              className={styles.cancelButton}
-                              onClick={handleCancelReply}
-                            >
-                              취소
-                            </button>
-                            <button
-                              type="submit"
-                              className={styles.submitButton}
-                              disabled={!replyText.trim()}
-                            >
-                              답변 하기
-                            </button>
-                          </div>
-                        </form>
-                      )}
-                      </div>
                     </>
                   )}
-                  {/* 판매자 답글은 상품 판매자 계정에서만 작성 가능 (추후 권한 분기 필요) */}
                 </div>
               ))
             )}

@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/src/components/hero/banner/styles.module.css"],"sourcesContent":[".hero {\n  position: relative;\n  width: 100%;\n  aspect-ratio: 1920 / 516;\n  background: var(--color-gray-100);\n  overflow: hidden;\n}\n\n.slide {\n  position: absolute;\n  inset: 0;\n  opacity: 0;\n  transition: opacity 0.5s ease-in-out;\n  pointer-events: none;\n}\n\n.slideActive {\n  opacity: 1;\n  pointer-events: auto;\n}\n\n.slideImage {\n  object-fit: cover;\n  object-position: 50% 80%;\n}\n\n.dots {\n  position: absolute;\n  left: 50%;\n  bottom: 24px;\n  transform: translateX(-50%);\n  z-index: 1;\n  display: flex;\n  gap: 12px;\n}\n\n.dot {\n  width: 8px;\n  height: 8px;\n  border-radius: var(--radius-full);\n  border: none;\n  background: rgba(255, 255, 255, 0.5); /* 비활성 상태 */\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15); /* 실측: 바깥쪽 그림자 X0 Y0 B4 S0 */\n  cursor: pointer;\n  padding: 0;\n}\n\n.dotActive {\n  background: var(--color-white); /* 실측: 활성 상태 FFFFFF 100% */\n}\n\n/* 참고: 모바일에서 실제로 다른 비율/크롭을 쓴다면 피그마 모바일 배너 프레임을 확인해서\n   여기에 별도 aspect-ratio를 지정해야 합니다. 지금은 데스크탑과 동일 비율(1920:516)로 유지됩니다. */\n"],"names":[],"mappings":"AAAA;;;;;;;;AAQA;;;;;;;;AAQA;;;;;AAKA;;;;;AAKA;;;;;;;;;;AAUA;;;;;;;;;;;AAWA"}}]
-}

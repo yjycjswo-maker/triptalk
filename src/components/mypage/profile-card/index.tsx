@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./styles.module.css";
 
 interface ProfileCardProps {
@@ -53,7 +54,7 @@ export default function ProfileCard({
 
       <nav className={styles.menuList}>
         {MENU_ITEMS.map((item) => (
-          <a
+          <Link
             key={item.id}
             href={item.href}
             className={`${styles.menuItem} ${activeMenu === item.id ? styles.menuItemActive : ""}`}
@@ -74,7 +75,7 @@ export default function ProfileCard({
                 strokeLinejoin="round"
               />
             </svg>
-          </a>
+          </Link>
         ))}
       </nav>
     </div>

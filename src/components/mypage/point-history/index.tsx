@@ -120,7 +120,11 @@ export default function PointHistory() {
               {ALL_TX.map((tx, i) => (
                 <div key={i} className={styles.row}>
                   <span className={styles.colDate}>{tx.date}</span>
-                  <span className={styles.colType}>{tx.type}</span>
+                  <span
+                    className={`${styles.colType} ${tx.type === "구매" ? styles.amountMinus : styles.amountPlus}`}
+                  >
+                    {tx.type}
+                  </span>
                   <span
                     className={`${styles.colAmountFlex} ${tx.amount > 0 ? styles.amountPlus : styles.amountMinus}`}
                   >

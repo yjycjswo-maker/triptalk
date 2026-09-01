@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import styles from "./styles.module.css";
 
 interface Product {
@@ -9,6 +10,7 @@ interface Product {
   sold: boolean;
   price: string;
   date: string;
+  seller: string;
 }
 
 const PRODUCTS: Product[] = [
@@ -18,6 +20,7 @@ const PRODUCTS: Product[] = [
     sold: true,
     price: "326,000원",
     date: "2024.12.16",
+    seller: "홍길동",
   },
   {
     no: 243,
@@ -25,6 +28,7 @@ const PRODUCTS: Product[] = [
     sold: false,
     price: "326,000원",
     date: "2024.12.16",
+    seller: "홍길동",
   },
   {
     no: 243,
@@ -32,6 +36,7 @@ const PRODUCTS: Product[] = [
     sold: true,
     price: "326,000원",
     date: "2024.12.16",
+    seller: "홍길동",
   },
   {
     no: 243,
@@ -39,6 +44,7 @@ const PRODUCTS: Product[] = [
     sold: true,
     price: "326,000원",
     date: "2024.12.16",
+    seller: "홍길동",
   },
   {
     no: 243,
@@ -46,6 +52,7 @@ const PRODUCTS: Product[] = [
     sold: false,
     price: "326,000원",
     date: "2024.12.16",
+    seller: "홍길동",
   },
   {
     no: 243,
@@ -53,6 +60,7 @@ const PRODUCTS: Product[] = [
     sold: false,
     price: "326,000원",
     date: "2024.12.16",
+    seller: "홍길동",
   },
   {
     no: 243,
@@ -60,6 +68,7 @@ const PRODUCTS: Product[] = [
     sold: false,
     price: "326,000원",
     date: "2024.12.16",
+    seller: "홍길동",
   },
   {
     no: 243,
@@ -67,6 +76,7 @@ const PRODUCTS: Product[] = [
     sold: false,
     price: "326,000원",
     date: "2024.12.16",
+    seller: "홍길동",
   },
   {
     no: 243,
@@ -74,31 +84,37 @@ const PRODUCTS: Product[] = [
     sold: false,
     price: "326,000원",
     date: "2024.12.16",
+    seller: "홍길동",
   },
 ];
 
-export default function ProductList() {
-  const [tab, setTab] = useState<"products" | "bookmarks">("products");
+type ProductListProps = {
+  mode?: "products" | "bookmarks";
+};
+
+export default function ProductList({ mode = "products" }: ProductListProps) {
   const [keyword, setKeyword] = useState("");
+  const [products, setProducts] = useState(PRODUCTS);
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(keyword.trim().toLowerCase()),
+  );
 
   return (
     <div className={styles.wrap}>
       {/* 탭 */}
       <div className={styles.tabs}>
-        <button
-          type="button"
-          className={`${styles.tab} ${tab === "products" ? styles.tabActive : ""}`}
-          onClick={() => setTab("products")}
+        <Link
+          href="/my-page/history"
+          className={`${styles.tab} ${mode === "products" ? styles.tabActive : ""}`}
         >
           나의 상품
-        </button>
-        <button
-          type="button"
-          className={`${styles.tab} ${tab === "bookmarks" ? styles.tabActive : ""}`}
-          onClick={() => setTab("bookmarks")}
+        </Link>
+        <Link
+          href="/my-page/bookmarks"
+          className={`${styles.tab} ${mode === "bookmarks" ? styles.tabActive : ""}`}
         >
           북마크
-        </button>
+        </Link>
       </div>
 
       {/* 검색바 - 게시판과 달리 날짜 필터 없이 검색창만 */}
@@ -143,11 +159,14 @@ export default function ProductList() {
           <span className={styles.colNo}>번호</span>
           <span className={styles.colName}>상품 명</span>
           <span className={styles.colPrice}>판매가격</span>
+          {mode === "bookmarks" && (
+            <span className={styles.colSeller}>판매자</span>
+          )}
           <span className={styles.colDate}>날짜</span>
         </div>
 
         <div className={styles.rows}>
-          {PRODUCTS.map((product, index) => (
+          {filteredProducts.map((product, index) => (
             <div key={index} className={styles.rowWrap}>
               <a
                 href={`/my-page/products/${product.no}-${index}`}
@@ -161,6 +180,9 @@ export default function ProductList() {
                   )}
                 </span>
                 <span className={styles.colPrice}>{product.price}</span>
+                {mode === "bookmarks" && (
+                  <span className={styles.colSeller}>{product.seller}</span>
+                )}
                 <span className={styles.colDate}>{product.date}</span>
               </a>
 
@@ -171,7 +193,9 @@ export default function ProductList() {
                 onClick={(event) => {
                   event.preventDefault();
                   event.stopPropagation();
-                  // TODO: 삭제 API 연동
+                  setProducts((current) =>
+                    current.filter((item) => item !== product),
+                  );
                 }}
               >
                 <span className={styles.deleteIcon} aria-hidden />

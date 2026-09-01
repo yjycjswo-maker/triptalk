@@ -1,88 +1,153 @@
-.card {
-  width: 100%;
-  max-width: 860px; /* 실측: 페이지 좌측 컨텐츠 영역 근사값 */
-  padding: 24px;
-  border: 1px solid var(--color-gray-100);
-  border-radius: 16px;
-}
-
-.title {
-  font-family: var(--font-family-base);
-  font-size: 16px;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-black);
-  margin: 0 0 16px;
-}
-
-.profileRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-full);
-  object-fit: cover;
-  background-color: var(--color-gray-100);
-}
-
-.name {
-  font-family: var(--font-family-base);
-  font-size: 16px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-black);
-}
-
-.pointRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--color-gray-100);
-  margin-bottom: 8px;
-}
-
-.pointText {
-  font-family: var(--font-family-base);
-  font-size: 15px;
-  font-weight: var(--font-weight-medium);
-  color: var(--color-black);
-}
-
-.menuList {
+.wrap {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+  width: 100%;
 }
 
-.menuItem {
+.tabs {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 14px 4px;
-  border-bottom: 1px solid var(--color-gray-100);
-  text-decoration: none;
+  gap: 12px;
+}
+
+.tab {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-gray-450);
   font-family: var(--font-family-base);
-  font-size: 15px;
-  font-weight: var(--font-weight-regular);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+.tabActive {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.tableCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 24px 32px;
+  border-radius: 16px;
+  background: var(--color-white);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 8%);
+}
+
+.headerRow,
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.headerRow {
+  padding: 12px 16px;
+}
+
+.headerRow span,
+.headerRow a {
   color: var(--color-gray-900);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
 }
 
-.menuItem:last-child {
-  border-bottom: none;
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
 }
 
-.menuItem:hover {
+.row {
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid var(--color-gray-100);
+  border-radius: 8px;
+}
+
+.row span,
+.row a {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+}
+
+.colDate {
+  width: 120px;
+  flex-shrink: 0;
+  color: var(--color-gray-400);
+}
+
+.colType {
+  width: 120px;
+  flex-shrink: 0;
+  font-weight: var(--font-weight-medium);
+}
+
+.colAmountFlex {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: center;
+}
+
+.amountPlus {
   color: var(--color-primary);
 }
 
-.menuItemActive {
-  background: var(--color-gray-100); /* 실측: 선택된 메뉴 회색 배경 */
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
+.amountMinus {
+  color: var(--color-like);
+}
+
+.colBalance {
+  width: 150px;
+  flex-shrink: 0;
+  text-align: right;
   color: var(--color-black);
   font-weight: var(--font-weight-medium);
+}
+
+.colPaymentId {
+  width: 180px;
+  flex-shrink: 0;
+  color: var(--color-gray-450);
+}
+
+.colProduct {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-gray-900);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.colSeller {
+  width: 100px;
+  flex-shrink: 0;
+  text-align: right;
+  color: var(--color-primary);
+}
+
+@media (max-width: 780px) {
+  .tableCard {
+    padding: 16px;
+    overflow-x: auto;
+  }
+
+  .headerRow,
+  .row {
+    min-width: 680px;
+  }
+
+  .tabs {
+    overflow-x: auto;
+  }
 }

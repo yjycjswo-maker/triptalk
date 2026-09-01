@@ -29,7 +29,7 @@ export default function UserProfile({ activeMenu }: UserProfileProps) {
     FETCH_USER_LOGGED_IN,
     {
       skip: !hasAccessToken,
-      fetchPolicy: "network-only",
+      fetchPolicy: "cache-first",
     },
   );
 
@@ -49,7 +49,7 @@ export default function UserProfile({ activeMenu }: UserProfileProps) {
       avatar={
         data.fetchUserLoggedIn.picture?.startsWith("/img/profile/")
           ? data.fetchUserLoggedIn.picture
-          : "/img/profile/img.png"
+          : "/img/profile/img-5.png"
       }
       point={data.fetchUserLoggedIn.userPoint?.amount ?? 0}
       activeMenu={activeMenu}

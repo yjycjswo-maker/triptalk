@@ -21,6 +21,7 @@
   font-weight: var(--font-weight-medium);
   color: var(--color-gray-450);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .tabActive {
@@ -33,6 +34,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  width: min(56%, 620px);
+  margin-left: auto;
 }
 
 .searchField {
@@ -79,6 +82,10 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
+  padding: 24px 32px;
+  border-radius: 16px;
+  background: var(--color-white);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 8%);
 }
 
 .headerRow {
@@ -116,7 +123,7 @@
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 48px 12px 16px;
   border-radius: 8px;
   text-decoration: none;
   transition: background-color 0.15s ease;
@@ -179,11 +186,20 @@
   color: var(--color-gray-400);
 }
 
+.colSeller {
+  width: 88px;
+  flex-shrink: 0;
+  text-align: right;
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  color: var(--color-gray-450);
+}
+
 /* 삭제 버튼 - board-table과 동일 패턴 */
 .deleteButton {
   position: absolute;
   top: 50%;
-  right: -28px;
+  right: 14px;
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
@@ -218,7 +234,12 @@
 
 @media (max-width: 780px) {
   .colPrice,
+  .colSeller,
   .colDate {
     display: none;
+  }
+
+  .searchRow {
+    width: 100%;
   }
 }
