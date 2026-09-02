@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
 import OpenStreetMap from "@/components/ui/open-street-map";
 import {
@@ -195,6 +195,7 @@ export default function StayDetail({
   const [inquiryError, setInquiryError] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
+  const galleryRef = useRef<HTMLDivElement>(null);
 
   const { data, loading: isLoadingInquiries, error: inquiryQueryError } = useQuery<{
     fetchTravelproductQuestions: ApiQuestion[];
@@ -468,16 +469,24 @@ export default function StayDetail({
     (_, index) => images[(thumbnailStartIndex + index) % images.length],
   );
 
-  const handleThumbnailWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    event.preventDefault();
+  useEffect(() => {
+    const gallery = galleryRef.current;
+    if (!gallery || images.length === 0) return;
 
-    if (event.deltaY === 0) return;
+    const handleWheel = (event: WheelEvent) => {
+      if (event.deltaY === 0) return;
 
-    setThumbnailStartIndex((currentIndex) => {
-      const direction = event.deltaY > 0 ? 1 : -1;
-      return (currentIndex + direction + images.length) % images.length;
-    });
-  };
+      event.preventDefault();
+      event.stopPropagation();
+      setThumbnailStartIndex((currentIndex) => {
+        const direction = event.deltaY > 0 ? 1 : -1;
+        return (currentIndex + direction + images.length) % images.length;
+      });
+    };
+
+    gallery.addEventListener("wheel", handleWheel, { passive: false });
+    return () => gallery.removeEventListener("wheel", handleWheel);
+  }, [images.length]);
 
   return (
     <article className={styles.section}>
@@ -594,7 +603,7 @@ export default function StayDetail({
 
         {/* 이미지 갤러리 + 구매/판매자 카드 */}
         <div className={styles.topRow}>
-          <div className={styles.gallery}>
+          <div className={styles.gallery} ref={galleryRef}>
             <div className={styles.mainImageWrap}>
               <Image
                 src={mainImage}
@@ -605,7 +614,6 @@ export default function StayDetail({
             </div>
             <div
               className={styles.thumbGrid}
-              onWheel={handleThumbnailWheel}
               aria-label="숙소 사진 목록"
             >
               {thumbnails.map((thumb, visibleIndex) => {

@@ -91,6 +91,7 @@
   gap: 8px;
   width: 844px;
   flex-shrink: 0;
+  overscroll-behavior: contain;
 }
 
 .mainImageWrap {
