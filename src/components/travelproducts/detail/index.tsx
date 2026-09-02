@@ -195,7 +195,7 @@ export default function StayDetail({
   const [inquiryError, setInquiryError] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
-  const galleryRef = useRef<HTMLDivElement>(null);
+  const thumbnailGridRef = useRef<HTMLDivElement>(null);
 
   const { data, loading: isLoadingInquiries, error: inquiryQueryError } = useQuery<{
     fetchTravelproductQuestions: ApiQuestion[];
@@ -470,8 +470,8 @@ export default function StayDetail({
   );
 
   useEffect(() => {
-    const gallery = galleryRef.current;
-    if (!gallery || images.length === 0) return;
+    const thumbnailGrid = thumbnailGridRef.current;
+    if (!thumbnailGrid || images.length === 0) return;
 
     const handleWheel = (event: WheelEvent) => {
       if (event.deltaY === 0) return;
@@ -484,8 +484,8 @@ export default function StayDetail({
       });
     };
 
-    gallery.addEventListener("wheel", handleWheel, { passive: false });
-    return () => gallery.removeEventListener("wheel", handleWheel);
+    thumbnailGrid.addEventListener("wheel", handleWheel, { passive: false });
+    return () => thumbnailGrid.removeEventListener("wheel", handleWheel);
   }, [images.length]);
 
   return (
@@ -508,93 +508,44 @@ export default function StayDetail({
                 className={styles.iconButton}
                 aria-label="삭제"
               >
-                <svg
+                <Image
+                  src="/icon/shape/outline/delete.png"
+                  alt=""
                   width="20"
                   height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden
-                >
-                  <path
-                    d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0-1 12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7"
-                    stroke="#919191"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                />
               </button>
               <button
                 type="button"
                 className={styles.iconButton}
                 aria-label="링크 공유"
               >
-                <svg
+                <Image
+                  src="/icon/shape/outline/link.svg"
+                  alt=""
                   width="20"
                   height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden
-                >
-                  <path
-                    d="M9 12h6M8 17H6a5 5 0 0 1 0-10h2m8 0h2a5 5 0 0 1 0 10h-2"
-                    stroke="#919191"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                  />
-                </svg>
+                />
               </button>
               <button
                 type="button"
                 className={styles.iconButton}
                 aria-label="위치"
               >
-                <svg
+                <Image
+                  src="/icon/shape/outline/location.svg"
+                  alt=""
                   width="20"
                   height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden
-                >
-                  <path
-                    d="M12 21s-6.7-4.35-6.7-10A6.7 6.7 0 0 1 12 4a6.7 6.7 0 0 1 6.7 7c0 5.65-6.7 10-6.7 10z"
-                    stroke="#919191"
-                    strokeWidth="1.6"
-                  />
-                  <circle
-                    cx="12"
-                    cy="11"
-                    r="2.4"
-                    stroke="#919191"
-                    strokeWidth="1.6"
-                  />
-                </svg>
+                />
               </button>
               <span className={styles.photoBadge}>
-                <svg
+                <Image
+                  src="/icon/shape/outline/bookmark.svg"
+                  alt=""
                   width="16"
                   height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden
-                >
-                  <rect
-                    x="3"
-                    y="6"
-                    width="18"
-                    height="14"
-                    rx="2"
-                    stroke="#777777"
-                    strokeWidth="1.6"
-                  />
-                  <circle
-                    cx="12"
-                    cy="13"
-                    r="3.2"
-                    stroke="#777777"
-                    strokeWidth="1.6"
-                  />
-                </svg>
+                />
                 {photoCount}
               </span>
             </div>
@@ -603,7 +554,7 @@ export default function StayDetail({
 
         {/* 이미지 갤러리 + 구매/판매자 카드 */}
         <div className={styles.topRow}>
-          <div className={styles.gallery} ref={galleryRef}>
+          <div className={styles.gallery}>
             <div className={styles.mainImageWrap}>
               <Image
                 src={mainImage}
@@ -614,6 +565,7 @@ export default function StayDetail({
             </div>
             <div
               className={styles.thumbGrid}
+              ref={thumbnailGridRef}
               aria-label="숙소 사진 목록"
             >
               {thumbnails.map((thumb, visibleIndex) => {

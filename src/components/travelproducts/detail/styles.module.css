@@ -72,9 +72,9 @@
   align-items: center;
   gap: 4px;
   padding: 4px 8px;
-  border-radius: 999px;
-  background: var(--color-gray-100);
-  color: var(--color-gray-700);
+  border-radius: 10px;
+  background: var(--color-gray-400);
+  color: var(--color-white);
   font-size: 12px;
   font-weight: var(--font-weight-medium);
 }
@@ -91,7 +91,6 @@
   gap: 8px;
   width: 844px;
   flex-shrink: 0;
-  overscroll-behavior: contain;
 }
 
 .mainImageWrap {
@@ -127,7 +126,9 @@
   cursor: pointer;
   opacity: 0.45;
   filter: grayscale(0.7);
-  transition: opacity 160ms ease, filter 160ms ease;
+  transition:
+    opacity 160ms ease,
+    filter 160ms ease;
 }
 
 .thumbWrap:focus-visible {
