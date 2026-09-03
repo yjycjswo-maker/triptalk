@@ -1,10 +1,17 @@
 import Link from "next/link";
-import type { TripTalkPost } from "@/lib/trip-talk-data";
 import styles from "./styles.module.css";
 
+export interface BoardListItem {
+  id: string;
+  no: number;
+  title: string;
+  author: string;
+  date: string;
+}
+
 interface BoardTableProps {
-  posts: TripTalkPost[];
-  onDelete?: (post: TripTalkPost) => void;
+  posts: BoardListItem[];
+  onDelete?: (post: BoardListItem) => void;
 }
 
 export default function BoardTable({ posts, onDelete }: BoardTableProps) {
@@ -20,7 +27,7 @@ export default function BoardTable({ posts, onDelete }: BoardTableProps) {
       <div className={styles.rows}>
         {posts.map((post) => (
           <div key={post.no} className={styles.rowWrap}>
-            <Link href={`/trip-talk/${post.no}`} className={styles.row}>
+            <Link href={`/trip-talk/${post.id}`} className={styles.row}>
               <span className={styles.colNo}>{post.no}</span>
               <span className={styles.colTitle}>{post.title}</span>
               <span className={styles.colAuthor}>{post.author}</span>

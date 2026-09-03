@@ -1,0 +1,40 @@
+.section { width: 100%; padding: 32px 0 64px; }
+.container { width: 100%; max-width: var(--layout-max-width); margin: 0 auto; padding: 0 var(--layout-gutter); }
+.heading { margin: 0 0 32px; font-size: 20px; line-height: 28px; font-weight: var(--font-weight-bold); }
+.form { display: flex; flex-direction: column; }
+.field { display: flex; flex-direction: column; gap: 8px; padding: 32px 0; border-bottom: 1px solid var(--color-gray-100); }
+.label { color: var(--color-gray-700); font-size: 14px; font-weight: var(--font-weight-semibold); line-height: 20px; }
+.label em { color: var(--color-accent-red); font-style: normal; }
+.field > input, .addressFields > input, .addressFields label input { width: 100%; height: 48px; padding: 0 14px; border: 1px solid var(--color-gray-200); border-radius: 8px; background: var(--color-white); outline: none; }
+.field > input:focus, .addressFields > input:focus { border-color: var(--color-gray-500); }
+.field input::placeholder, .editor textarea::placeholder, .addressFields input::placeholder { color: var(--color-gray-300); }
+.editor { overflow: hidden; border: 1px solid var(--color-gray-200); border-radius: 8px; }
+.toolbar { display: flex; align-items: center; gap: 24px; min-height: 52px; padding: 0 16px; border-bottom: 1px solid var(--color-gray-100); font-size: 17px; font-weight: var(--font-weight-semibold); }
+.editor textarea { width: 100%; min-height: 336px; padding: 16px; border: 0; resize: vertical; outline: none; font: inherit; line-height: 1.6; }
+.locationSection { display: grid; grid-template-columns: 400px minmax(0, 1fr); gap: 40px; padding: 32px 0; border-bottom: 1px solid var(--color-gray-100); }
+.addressFields, .mapColumn { display: flex; flex-direction: column; gap: 8px; }
+.zipRow { display: flex; gap: 8px; }
+.zipRow input { width: 82px; height: 48px; padding: 0 14px; border: 1px solid var(--color-gray-200); border-radius: 8px; outline: none; }
+.zipRow button { height: 48px; padding: 0 16px; border: 1px solid var(--color-gray-700); border-radius: 8px; background: var(--color-white); font-weight: var(--font-weight-semibold); }
+.addressFields label { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; color: var(--color-gray-700); font-size: 14px; font-weight: var(--font-weight-semibold); }
+.addressFields label input { margin-top: 0; border: 0; background: var(--color-gray-150); color: var(--color-gray-500); font-weight: var(--font-weight-regular); }
+.mapWrap { width: 100%; min-height: 312px; overflow: hidden; border-radius: 16px; background: var(--color-gray-150); }
+.mapWrap > p { height: 312px; display: flex; align-items: center; justify-content: center; color: var(--color-gray-450); }
+.photoSection { display: flex; flex-direction: column; gap: 8px; padding: 32px 0; }
+.uploadButton { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 160px; height: 160px; overflow: hidden; border-radius: 8px; background: var(--color-gray-100); color: var(--color-gray-400); cursor: pointer; }
+.uploadButton input { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); }
+.uploadButton b { font-size: 34px; font-weight: var(--font-weight-light); }
+.preview { object-fit: cover; }
+.error { color: var(--color-accent-red); font-size: 14px; text-align: right; }
+.actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 32px; }
+.cancelButton, .submitButton { height: 48px; padding: 0 18px; border-radius: 8px; font-weight: var(--font-weight-semibold); }
+.cancelButton { border: 1px solid var(--color-gray-700); background: var(--color-white); }
+.submitButton { min-width: 96px; border: 0; background: var(--color-black); color: var(--color-white); }
+.submitButton:disabled { background: var(--color-gray-200); color: var(--color-gray-400); cursor: not-allowed; }
+
+@media (max-width: 780px) {
+  .locationSection { grid-template-columns: 1fr; }
+  .toolbar { gap: 14px; overflow-x: auto; }
+  .editor textarea { min-height: 240px; }
+  .mapWrap, .mapWrap > p { min-height: 260px; height: 260px; }
+}

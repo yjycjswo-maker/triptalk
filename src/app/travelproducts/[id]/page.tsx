@@ -1,46 +1,65 @@
+"use client";
+
+import { useParams } from "next/navigation";
+import { useQuery } from "@apollo/client/react";
 import Header from "@/components/commons/header";
 import StayDetail from "@/components/travelproducts/detail";
+import { FetchTravelproductDocument } from "@/graphql/generated/graphql";
+import { getStorageImageUrl } from "@/lib/storage-image";
 
-export default async function StayDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+export default function StayDetailPage() {
+  const params = useParams<{ id: string }>();
+  const { data, loading, error } = useQuery(FetchTravelproductDocument, {
+    variables: { travelproductId: params.id },
+    skip: !params.id,
+  });
+  const product = data?.fetchTravelproduct;
+
+  const images = (product?.images ?? [])
+    .map(getStorageImageUrl)
+    .filter((image): image is string => Boolean(image));
+  const displayImages =
+    images.length > 0 ? images : ["/img/Purchase/Purchase-1.png"];
+  const address = [
+    product?.travelproductAddress?.address,
+    product?.travelproductAddress?.addressDetail,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <>
       <Header />
       <main>
-        <StayDetail
-          travelproductId={id}
-          title="포항 : 숙박권 명이 여기에 들어갑니다"
-          subtitle="모던한 분위기의 감도높은 숙소"
-          tags={["6인 이하", "건식 사우나", "매건동판 가능"]}
-          photoCount={24}
-          images={[
-            "/img/Purchase/Purchase-1.png",
-            "/img/Purchase/Purchase-2.png",
-            "/img/Purchase/Purchase-3.png",
-            "/img/Purchase/Purchase-4.png",
-          ]}
-          price="32,500원"
-          purchaseNotes={[
-            "숙박권은 트립트립에서 포인트 충전 후 구매하실 수 있습니다.",
-            "상세 설명에 숙박권 사용기한을 꼭 확인해 주세요.",
-          ]}
-          seller={{ name: "김상훈", avatar: "/img/profile/avatar-1.png" }}
-          description={[
-            "살어리 살어리랏다 청산(靑山)에 살어리랏다멀위랑 두래랑 먹고 청산(靑山)에 살어리랏다얄리얄리 얄랑성 얄라리 얄라 우러라 우러라 새여 자고 니러 우러라 새여 널라와 시름 한 나도 자고 니러 우니노라얄리얄리 얄라성 얄라리 얄라",
-            "이링공 뎌링공 하야 나즈란 디내와손저오리도 가리도 업슨 바므란 또 엇디 흐리라얄리얄리 얄라성 얄라리 얄라",
-            "어디다 더디던 돌코 누리라 마치던 돌코믜리도 괴리도 업시 마자셔 우니노라얄리얄리 얄라성 얄라리 얄라",
-            "살어리 살어리랏다 바라래 살어리랏다누무자기 구조개랑 먹고 바라래 살어리랏다얄리얄리 얄라성 얄라리 얄라",
-            "가다가 가다가 드로라 에졍지 가다가 드로라사슴이 짐대에 올아셔 히금(奚琴)을 혀거를 드로라얄리얄리 얄라성 얄라리 얄라",
-            "가다니 배 브른 도긔 설진 강수를 비조라조롱곳 누로기 마와 잡스와니 내 엇디 흐리이꼬얄리얄리 얄라성 얄라리 얄라",
-          ]}
-          address="경기 성남시 분당구 낙생마을로 6"
-          coordinates={{ latitude: 37.3908, longitude: 127.1014 }}
-        />
+        {loading && <p>숙박권 정보를 불러오는 중입니다.</p>}
+        {error && <p>숙박권 정보를 불러오지 못했습니다.</p>}
+        {product && (
+          <StayDetail
+            travelproductId={product._id}
+            title={product.name}
+            subtitle={product.remarks}
+            tags={product.tags ?? []}
+            photoCount={product.pickedCount ?? 0}
+            images={displayImages}
+            price={`${(product.price ?? 0).toLocaleString("ko-KR")}원`}
+            purchaseNotes={[
+              "숙박권은 트립트립에서 포인트 충전 후 구매하실 수 있습니다.",
+              "상세 설명에 숙박권 사용기한을 꼭 확인해 주세요.",
+            ]}
+            seller={{
+              name: product.seller?.name ?? "판매자",
+              avatar:
+                getStorageImageUrl(product.seller?.picture) ??
+                "/img/profile/avatar-1.png",
+            }}
+            description={[product.contents]}
+            address={address}
+            coordinates={{
+              latitude: product.travelproductAddress?.lat ?? 37.5665,
+              longitude: product.travelproductAddress?.lng ?? 126.978,
+            }}
+          />
+        )}
       </main>
     </>
   );

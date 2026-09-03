@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "codegen": "graphql-codegen --config codegen.ts",
     "start": "next start",
     "lint": "eslint"
   },
@@ -21,6 +22,8 @@
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^7.4.0",
+    "@graphql-codegen/client-preset": "^6.1.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

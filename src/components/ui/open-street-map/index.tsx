@@ -7,14 +7,12 @@ import styles from "./styles.module.css";
 type OpenStreetMapProps = {
   latitude: number;
   longitude: number;
-  title: string;
   address: string;
 };
 
 export default function OpenStreetMap({
   latitude,
   longitude,
-  title,
   address,
 }: OpenStreetMapProps) {
   const mapElement = useRef<HTMLDivElement>(null);
@@ -42,14 +40,21 @@ export default function OpenStreetMap({
       L.marker([latitude, longitude], {
         icon: L.divIcon({
           className: styles.marker,
-          html: "📍",
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
+          html: `
+            <svg viewBox="0 0 32 40" width="32" height="40" aria-hidden="true">
+              <path
+                d="M16 1C8.27 1 2 7.27 2 15c0 10.5 14 24 14 24s14-13.5 14-24C30 7.27 23.73 1 16 1Z"
+                fill="#f66a6a"
+                stroke="#ffffff"
+                stroke-width="2"
+              />
+              <circle cx="16" cy="15" r="5" fill="#ffffff" />
+            </svg>
+          `,
+          iconSize: [32, 40],
+          iconAnchor: [16, 40],
         }),
-      })
-        .addTo(map)
-        .bindPopup(`<strong>${title}</strong><br />${address}`)
-        .openPopup();
+      }).addTo(map);
     };
 
     void createMap();
@@ -58,7 +63,7 @@ export default function OpenStreetMap({
       isUnmounted = true;
       map?.remove();
     };
-  }, [address, latitude, longitude, title]);
+  }, [address, latitude, longitude]);
 
   return <div ref={mapElement} className={styles.map} aria-label={`${address} 지도`} />;
 }

@@ -9,7 +9,16 @@ const httpLink = new HttpLink({
 
 // 로그인 후 저장해둔 토큰을 모든 요청 헤더에 자동으로 붙여주는 링크
 // (지금은 로그인 기능이 아직 없어서 토큰이 없으면 그냥 빈 헤더로 요청됨)
-const PUBLIC_OPERATION_NAMES = new Set(["LoginUser", "CreateUser"]);
+const PUBLIC_OPERATION_NAMES = new Set([
+  "LoginUser",
+  "CreateUser",
+  "CreateBoard",
+  "FetchBoards",
+  "fetchBoard",
+  "FetchTravelproducts",
+  "FetchTravelproductsOfTheBest",
+  "FetchTravelproduct",
+]);
 
 const authLink = setContext((operation, { headers }) => {
   if (

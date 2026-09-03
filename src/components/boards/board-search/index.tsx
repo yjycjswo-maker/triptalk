@@ -6,16 +6,20 @@ import DateRangePicker from "@/components/ui/date-range-picker";
 import styles from "./styles.module.css";
 
 interface BoardSearchProps {
+  initialKeyword?: string;
+  initialRange?: DateRange;
   onSearch: (params: { keyword: string; range?: DateRange }) => void;
   onWriteClick?: () => void;
 }
 
 export default function BoardSearch({
+  initialKeyword = "",
+  initialRange,
   onSearch,
   onWriteClick,
 }: BoardSearchProps) {
-  const [keyword, setKeyword] = useState("");
-  const [range, setRange] = useState<DateRange | undefined>();
+  const [keyword, setKeyword] = useState(initialKeyword);
+  const [range, setRange] = useState<DateRange | undefined>(initialRange);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();

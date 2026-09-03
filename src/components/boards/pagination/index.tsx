@@ -2,6 +2,8 @@
 
 import styles from "./styles.module.css";
 
+const PAGES_PER_GROUP = 10;
+
 interface PaginationProps {
   page: number;
   totalPages: number;
@@ -13,14 +15,22 @@ export default function Pagination({
   totalPages,
   onPageChange,
 }: PaginationProps) {
+  const groupStart =
+    Math.floor((page - 1) / PAGES_PER_GROUP) * PAGES_PER_GROUP + 1;
+  const groupEnd = Math.min(groupStart + PAGES_PER_GROUP - 1, totalPages);
+  const visiblePages = Array.from(
+    { length: groupEnd - groupStart + 1 },
+    (_, index) => groupStart + index,
+  );
+
   return (
     <nav className={styles.pagination} aria-label="게시판 페이지">
       <button
         type="button"
         className={styles.pageArrow}
-        disabled={page === 1}
-        onClick={() => onPageChange(Math.max(1, page - 1))}
-        aria-label="이전 페이지"
+        disabled={groupStart === 1}
+        onClick={() => onPageChange(groupStart - 1)}
+        aria-label="이전 10페이지"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
@@ -33,7 +43,7 @@ export default function Pagination({
         </svg>
       </button>
 
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+      {visiblePages.map((num) => (
         <button
           key={num}
           type="button"
@@ -47,9 +57,9 @@ export default function Pagination({
       <button
         type="button"
         className={styles.pageArrow}
-        disabled={page === totalPages}
-        onClick={() => onPageChange(Math.min(totalPages, page + 1))}
-        aria-label="다음 페이지"
+        disabled={groupEnd === totalPages}
+        onClick={() => onPageChange(groupEnd + 1)}
+        aria-label="다음 10페이지"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
           <path

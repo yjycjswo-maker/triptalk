@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { requireLogin } from "@/lib/auth-client";
 import styles from "./styles.module.css";
 
 interface TripTalkDetailProps {
@@ -40,10 +42,15 @@ export default function TripTalkDetail({
   avatar,
   date,
   address,
+  mainImage,
   bodyParagraphs,
+  videoThumbnail,
   viewCount,
   likeCount,
 }: TripTalkDetailProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const checkLogin = () => requireLogin(router, pathname);
   // 댓글 목록 - 실제로 등록/수정/삭제가 반영되는 state
   const [comments, setComments] = useState<Comment[]>([]);
 
@@ -66,6 +73,7 @@ export default function TripTalkDetail({
   // 댓글 등록
   const handleSubmitComment = (event: React.FormEvent) => {
     event.preventDefault();
+    if (!checkLogin()) return;
     if (!canSubmit) return;
 
     const newComment: Comment = {
@@ -86,6 +94,7 @@ export default function TripTalkDetail({
 
   // 댓글 삭제
   const handleDelete = (id: number) => {
+    if (!checkLogin()) return;
     setComments((prev) => prev.filter((c) => c.id !== id));
     if (editingId === id) {
       setEditingId(null);
@@ -94,6 +103,7 @@ export default function TripTalkDetail({
 
   // 댓글 수정
   const startEdit = (target: Comment) => {
+    if (!checkLogin()) return;
     setEditingId(target.id);
     setEditRating(target.rating);
     setEditContent(target.content);
@@ -142,7 +152,7 @@ export default function TripTalkDetail({
           <hr className={styles.metaDivider} />
 
           {/* 댓글이 없으면 주소를 박스(텍스트)로, 댓글이 있으면 아이콘만 */}
-          {comments.length === 0 ? (
+          {address && comments.length === 0 ? (
             <div className={styles.addressBadgeText}>
               <Image
                 src="/icon/shape/outline/location.svg"
@@ -152,7 +162,7 @@ export default function TripTalkDetail({
               />
               <span>{address}</span>
             </div>
-          ) : (
+          ) : address ? (
             <div className={styles.addressBadgeIcon}>
               <Image
                 src="/icon/shape/outline/link.svg"
@@ -167,19 +177,16 @@ export default function TripTalkDetail({
                 height={16}
               />
             </div>
-          )}
+          ) : null}
         </header>
 
-        {/* 본문 이미지 - 실제 존재하는 경로로 고정 */}
-        <div className={styles.mainImageWrap}>
-          <Image
-            src="/img/hot-talk/detail-1.png"
-            alt={title}
-            width={400}
-            height={531}
-            className={styles.mainImage}
-          />
-        </div>
+        {mainImage && (
+          <div className={styles.mainImageWrap}>
+            {/* API가 반환하는 외부 이미지 URL을 그대로 표시합니다. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={mainImage} alt={title} className={styles.mainImage} />
+          </div>
+        )}
 
         {/* 본문 텍스트 */}
         <div className={styles.body}>
@@ -190,15 +197,11 @@ export default function TripTalkDetail({
           ))}
         </div>
 
-        {/* 영상/사진 블록 - 실제 존재하는 경로로 고정 */}
-        <div className={styles.videoBlock}>
-          <Image
-            src="/img/hot-talk/detail-2.png"
-            alt=""
-            fill
-            className={styles.videoThumbnail}
-          />
-          <button type="button" className={styles.playButton} aria-label="재생">
+        {videoThumbnail && (
+          <div className={styles.videoBlock}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={videoThumbnail} alt="" className={styles.videoThumbnail} />
+            <button type="button" className={styles.playButton} aria-label="재생">
             <svg
               width="20"
               height="20"
@@ -208,8 +211,9 @@ export default function TripTalkDetail({
             >
               <path d="M8 5v14l11-7z" />
             </svg>
-          </button>
-        </div>
+            </button>
+          </div>
+        )}
 
         {/* 조회수/좋아요 + 목록/수정 버튼 */}
         <div className={styles.actionRow}>
@@ -270,7 +274,11 @@ export default function TripTalkDetail({
               </svg>
               목록으로
             </Link>
-            <button type="button" className={styles.editButton}>
+            <button
+              type="button"
+              className={styles.editButton}
+              onClick={checkLogin}
+            >
               <svg
                 width="16"
                 height="16"
@@ -312,7 +320,11 @@ export default function TripTalkDetail({
             <span className={styles.commentTitle}>댓글</span>
           </div>
 
-          <form className={styles.commentForm} onSubmit={handleSubmitComment}>
+          <form
+            className={styles.commentForm}
+            onSubmit={handleSubmitComment}
+            onFocusCapture={checkLogin}
+          >
             <div className={styles.starRow}>
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
@@ -379,7 +391,7 @@ export default function TripTalkDetail({
               <button
                 type="submit"
                 className={styles.submitButton}
-                disabled={!canSubmit}
+                aria-disabled={!canSubmit}
               >
                 댓글 등록
               </button>

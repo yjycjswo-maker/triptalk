@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "@apollo/client/react";
 import { LOGIN_USER } from "@/graphql/mutations";
+import { getSafeReturnTo } from "@/lib/auth-client";
 import styles from "./styles.module.css";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -73,7 +74,7 @@ export default function LoginForm() {
       }
 
       localStorage.setItem("accessToken", accessToken);
-      router.replace("/trip-talk");
+      router.replace(getSafeReturnTo(window.location.search));
     } catch (error) {
       setLoginError(getLoginErrorMessage(error));
     }

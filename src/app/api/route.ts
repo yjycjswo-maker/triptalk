@@ -5,8 +5,10 @@ const GRAPHQL_API = "https://main-practice.codebootcamp.co.kr/graphql";
 
 // Next.js Route Handler: POST 요청을 처리하는 함수
 export async function POST(request: NextRequest) {
-  // 클라이언트(Apollo Client)가 보낸 GraphQL Query/Mutation 본문을 그대로 가져옴
-  const query = await request.text();
+  // JSON GraphQL 요청과 파일 업로드용 multipart 요청을 모두 그대로 전달합니다.
+  const requestBody = await request.arrayBuffer();
+  const contentType =
+    request.headers.get("content-type") ?? "application/json";
 
   // 클라이언트가 보낸 요청에서 인증 헤더와 쿠키 정보를 추출
   const authorization = request.headers.get("authorization");
@@ -14,7 +16,7 @@ export async function POST(request: NextRequest) {
 
   // 백엔드로 보낼 새로운 헤더 객체 생성
   const headers = new Headers({
-    "content-type": "application/json",
+    "content-type": contentType,
     // 로그인 API의 Origin 오류를 방지하기 위해 출처(Origin) 정보를 설정
     origin: request.headers.get("origin") ?? request.nextUrl.origin,
   });
@@ -28,7 +30,7 @@ export async function POST(request: NextRequest) {
     const apiResponse = await fetch(GRAPHQL_API, {
       method: "POST",
       headers,
-      body: query,
+      body: requestBody,
       cache: "no-store", // 캐시를 사용하지 않고 매번 최신 데이터를 요청
     });
 

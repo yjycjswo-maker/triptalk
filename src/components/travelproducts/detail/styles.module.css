@@ -371,10 +371,10 @@
   cursor: pointer;
 }
 
-.submitButton:disabled {
+.submitButton:disabled,
+.submitButton[aria-disabled="true"] {
   background: var(--color-gray-200);
   color: var(--color-gray-400);
-  cursor: not-allowed;
 }
 
 .inquiryList {

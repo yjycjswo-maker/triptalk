@@ -1,37 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useQuery } from "@apollo/client/react";
+import { FetchTravelproductsOfTheBestDocument } from "@/graphql/generated/graphql";
+import { getStorageImageUrl } from "@/lib/storage-image";
 import styles from "./styles.module.css";
 
-interface FeaturedCard {
-  id: number;
-  image: string;
-  title: string;
-  subtitle: string;
-  price: string;
-  photoCount: number;
-}
-
-const FEATURED_CARDS: FeaturedCard[] = [
-  {
-    id: 1,
-    image: "/img/Purchase/Purchase-1.png",
-    title: "포항 : 당장 가고 싶은 숙소",
-    subtitle:
-      "살어리 살어리랏다 청산(靑山)에 살어리랏다멀위랑 두래랑 먹고 청산(靑山)애 살어리랏다",
-    price: "32,900 원",
-    photoCount: 24,
-  },
-  {
-    id: 2,
-    image: "/img/Purchase/Purchase-3.png",
-    title: "강릉 : 마음까지 깨끗해지는 하얀 숙소",
-    subtitle: "살어리 살어리랏다 강릉에 평생 살어리랏다",
-    price: "32,900 원",
-    photoCount: 24,
-  },
-];
-
 export default function FeaturedPicks() {
+  const { data } = useQuery(FetchTravelproductsOfTheBestDocument);
+  const featuredCards = (data?.fetchTravelproductsOfTheBest ?? []).slice(0, 2);
+
   return (
     <section className={styles.section}>
       <div className={styles.container}>
@@ -40,53 +19,40 @@ export default function FeaturedPicks() {
         </h2>
 
         <div className={styles.cardRow}>
-          {FEATURED_CARDS.map((card) => (
+          {featuredCards.map((card) => (
             <Link
-              key={card.id}
-              href={`/travelproducts/${card.id}`}
+              key={card._id}
+              href={`/travelproducts/${card._id}`}
               className={styles.card}
-              aria-label={`${card.title} 상세 페이지로 이동`}
+              aria-label={`${card.name} 상세 페이지로 이동`}
             >
               <Image
-                src={card.image}
-                alt={card.title}
+                src={
+                  getStorageImageUrl(card.images?.find(Boolean)) ??
+                  "/img/Purchase/Purchase-1.png"
+                }
+                alt={card.name}
                 fill
                 className={styles.cardImage}
               />
               <div className={styles.cardOverlay} />
 
               <span className={styles.photoBadge}>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden
-                >
-                  <rect
-                    x="3"
-                    y="6"
-                    width="18"
-                    height="14"
-                    rx="2"
-                    stroke="white"
-                    strokeWidth="1.6"
-                  />
-                  <circle
-                    cx="12"
-                    cy="13"
-                    r="3.5"
-                    stroke="white"
-                    strokeWidth="1.6"
-                  />
-                </svg>
-                {card.photoCount}
+                <Image
+                  src="/icon/shape/outline/bookmark.svg"
+                  alt=""
+                  width={16}
+                  height={16}
+                />
+                {card.pickedCount ?? 0}
               </span>
 
               <div className={styles.cardContent}>
-                <p className={styles.cardTitle}>{card.title}</p>
-                <p className={styles.cardSubtitle}>{card.subtitle}</p>
-                <p className={styles.cardPrice}>{card.price}</p>
+                <p className={styles.cardTitle}>{card.name}</p>
+                <p className={styles.cardSubtitle}>{card.remarks}</p>
+                <p className={styles.cardPrice}>
+                  {(card.price ?? 0).toLocaleString("ko-KR")} 원
+                </p>
               </div>
             </Link>
           ))}

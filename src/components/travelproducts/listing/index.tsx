@@ -2,22 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useQuery } from "@apollo/client/react";
 import type { DateRange } from "react-day-picker";
 import DateRangePicker from "@/components/ui/date-range-picker";
+import { FetchTravelproductsDocument } from "@/graphql/generated/graphql";
+import { getStorageImageUrl } from "@/lib/storage-image";
+import { requireLogin } from "@/lib/auth-client";
 import styles from "./styles.module.css";
-
-interface StayRoom {
-  id: number;
-  image: string;
-  title: string;
-  subtitle: string;
-  tag: string;
-  host: string;
-  hostAvatar: string;
-  price: string;
-  bookmarkCount: number;
-}
 
 // 각 필터 항목에 해당하는 아이콘 이미지 경로(icon) 추가
 const FILTERS = [
@@ -52,23 +45,30 @@ const FILTERS = [
   },
 ];
 
-const ROOMS: StayRoom[] = Array.from({ length: 8 }, (_, i) => ({
-  id: i + 1,
-  image: `/img/Purchase/Purchase-${(i % 4) + 1}.png`,
-  title: "살어리 살어리랏다 청산(靑山)에 살어리랏다...",
-  subtitle: "살어리 살어리랏다 청산(靑山)애 살어리랏디멀위랑...",
-  tag: "#할인 이벤트 진행중",
-  host: "인빈트리",
-  hostAvatar: "/img/profile/avatar-1.png",
-  price: "32,900 원",
-  bookmarkCount: 24,
-}));
-
 export default function StayListing() {
+  const router = useRouter();
   const [tab, setTab] = useState<"available" | "closed">("available");
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [keyword, setKeyword] = useState("");
+  const [submittedKeyword, setSubmittedKeyword] = useState("");
   const [range, setRange] = useState<DateRange | undefined>();
+  const { data, loading, error } = useQuery(FetchTravelproductsDocument, {
+    variables: {
+      page: 1,
+      search: submittedKeyword,
+      isSoldout: tab === "closed",
+    },
+    fetchPolicy: "cache-and-network",
+  });
+
+  const rooms = (data?.fetchTravelproducts ?? []).filter((room) => {
+    if (activeFilters.length === 0) return true;
+    const tags = room.tags ?? [];
+    return activeFilters.some((filterId) => {
+      const label = FILTERS.find((filter) => filter.id === filterId)?.label;
+      return label ? tags.some((tag) => tag.includes(label)) : false;
+    });
+  });
 
   const toggleFilter = (id: string) => {
     setActiveFilters((prev) =>
@@ -134,12 +134,20 @@ export default function StayListing() {
               />
             </label>
 
-            <button type="button" className={styles.searchButton}>
+            <button
+              type="button"
+              className={styles.searchButton}
+              onClick={() => setSubmittedKeyword(keyword.trim())}
+            >
               검색
             </button>
           </div>
 
-          <button type="button" className={styles.sellButton}>
+          <button
+            type="button"
+            className={styles.sellButton}
+            onClick={() => requireLogin(router, "/travelproducts/new")}
+          >
             <svg
               width="16"
               height="16"
@@ -168,11 +176,13 @@ export default function StayListing() {
               onClick={() => toggleFilter(filter.id)}
             >
               <span className={styles.filterIcon}>
-                <Image
-                  src={filter.icon}
-                  alt={filter.label}
-                  width={28}
-                  height={28}
+                <span
+                  className={styles.filterGlyph}
+                  style={{
+                    WebkitMaskImage: `url("${filter.icon}")`,
+                    maskImage: `url("${filter.icon}")`,
+                  }}
+                  aria-hidden="true"
                 />
               </span>
               <span className={styles.filterLabel}>{filter.label}</span>
@@ -180,18 +190,34 @@ export default function StayListing() {
           ))}
         </div>
 
-        {/* 숙소 카드 그리드 */}
-        <ul className={styles.roomGrid}>
-          {ROOMS.map((room) => (
-            <li key={room.id} className={styles.roomCard}>
+        {/* 검색/필터가 바뀌어도 이 결과 영역 안에서만 내용을 교체합니다. */}
+        <div className={styles.results}>
+          {loading && rooms.length === 0 ? (
+            <p className={styles.status}>숙박권을 불러오는 중입니다.</p>
+          ) : error ? (
+            <p className={styles.status}>숙박권을 불러오지 못했습니다.</p>
+          ) : rooms.length === 0 ? (
+            <p className={styles.status}>조건에 맞는 숙박권이 없습니다.</p>
+          ) : (
+            <ul className={styles.roomGrid}>
+              {rooms.map((room) => {
+            const roomImage =
+              getStorageImageUrl(room.images?.find(Boolean)) ??
+              "/img/Purchase/Purchase-1.png";
+            const hostAvatar =
+              getStorageImageUrl(room.seller?.picture) ??
+              "/img/profile/avatar-1.png";
+
+            return (
+            <li key={room._id} className={styles.roomCard}>
               <Link
-                href={`/travelproducts/${room.id}`}
+                href={`/travelproducts/${room._id}`}
                 className={styles.roomCardLink}
               >
                 <div className={styles.roomThumbnail}>
                   <Image
-                    src={room.image}
-                    alt={room.title}
+                    src={roomImage}
+                    alt={room.name}
                     fill
                     className={styles.roomImage}
                   />
@@ -202,31 +228,38 @@ export default function StayListing() {
                       width={24}
                       height={24}
                     />
-                    {room.bookmarkCount}
+                    {room.pickedCount ?? 0}
                   </span>
                 </div>
 
-                <p className={styles.roomTitle}>{room.title}</p>
-                <p className={styles.roomSubtitle}>{room.subtitle}</p>
-                <span className={styles.roomTag}>{room.tag}</span>
+                <p className={styles.roomTitle}>{room.name}</p>
+                <p className={styles.roomSubtitle}>{room.remarks}</p>
+                <span className={styles.roomTag}>
+                  {(room.tags ?? []).map((tag) => `#${tag}`).join(" ")}
+                </span>
 
                 <div className={styles.roomFooter}>
                   <div className={styles.roomHost}>
                     <Image
-                      src={room.hostAvatar}
-                      alt={room.host}
+                      src={hostAvatar}
+                      alt={room.seller?.name ?? "판매자"}
                       width={18}
                       height={18}
                       className={styles.hostAvatar}
                     />
-                    <span>{room.host}</span>
+                    <span>{room.seller?.name ?? "판매자"}</span>
                   </div>
-                  <span className={styles.roomPrice}>{room.price}</span>
+                  <span className={styles.roomPrice}>
+                    {(room.price ?? 0).toLocaleString("ko-KR")} 원
+                  </span>
                 </div>
               </Link>
             </li>
-          ))}
-        </ul>
+                );
+              })}
+            </ul>
+          )}
+        </div>
       </div>
     </section>
   );

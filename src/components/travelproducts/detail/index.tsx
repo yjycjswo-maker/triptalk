@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
 import OpenStreetMap from "@/components/ui/open-street-map";
@@ -17,6 +18,7 @@ import {
   UPDATE_TRAVELPRODUCT_QUESTION_ANSWER,
 } from "@/graphql/mutations";
 import styles from "./styles.module.css";
+import { requireLogin } from "@/lib/auth-client";
 
 interface ApiUser {
   _id: string;
@@ -181,6 +183,9 @@ export default function StayDetail({
   address,
   coordinates,
 }: StayDetailProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const checkLogin = () => requireLogin(router, pathname);
   const isTemporaryProduct = /^\d+$/.test(travelproductId);
   const localStorageKey = `triptalk:temporary-inquiries:${travelproductId}`;
   const [temporaryInquiries, setTemporaryInquiries] = useState<ApiQuestion[]>([]);
@@ -263,6 +268,7 @@ export default function StayDetail({
 
   const handleSubmitInquiry = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (!checkLogin()) return;
     if (!canSubmit) return;
 
     if (isTemporaryProduct) {
@@ -296,6 +302,7 @@ export default function StayDetail({
   };
 
   const handleDeleteInquiry = async (id: string) => {
+    if (!checkLogin()) return;
     if (!window.confirm("문의를 삭제할까요?")) return;
     if (isTemporaryProduct) {
       updateTemporaryInquiries((current) =>
@@ -312,6 +319,7 @@ export default function StayDetail({
   };
 
   const handleStartEditInquiry = (inquiry: ApiQuestion) => {
+    if (!checkLogin()) return;
     setEditingInquiryId(inquiry._id);
     setEditingInquiryText(inquiry.contents);
   };
@@ -350,6 +358,7 @@ export default function StayDetail({
   };
 
   const handleStartReply = (questionId: string) => {
+    if (!checkLogin()) return;
     setReplyingQuestionId(questionId);
     setReplyText("");
   };
@@ -361,6 +370,7 @@ export default function StayDetail({
 
   const handleSubmitReply = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (!checkLogin()) return;
     if (!replyText.trim() || !replyingQuestionId) return;
     if (isTemporaryProduct) {
       const questionId = replyingQuestionId;
@@ -400,6 +410,7 @@ export default function StayDetail({
   };
 
   const handleStartEditReply = (answer: ApiAnswer) => {
+    if (!checkLogin()) return;
     setEditingAnswerId(answer._id);
     setEditingReplyText(answer.contents);
   };
@@ -441,6 +452,7 @@ export default function StayDetail({
   };
 
   const handleDeleteReply = async (answerId: string) => {
+    if (!checkLogin()) return;
     if (!window.confirm("답변을 삭제할까요?")) return;
     if (isTemporaryProduct) {
       updateTemporaryInquiries((current) =>
@@ -599,7 +611,11 @@ export default function StayDetail({
                   <li key={index}>{note}</li>
                 ))}
               </ul>
-              <button type="button" className={styles.purchaseButton}>
+              <button
+                type="button"
+                className={styles.purchaseButton}
+                onClick={checkLogin}
+              >
                 구매하기
               </button>
             </div>
@@ -639,7 +655,6 @@ export default function StayDetail({
             <OpenStreetMap
               latitude={coordinates.latitude}
               longitude={coordinates.longitude}
-              title={title}
               address={address}
             />
           </div>
@@ -674,7 +689,11 @@ export default function StayDetail({
             <span className={styles.inquiryTitle}>문의하기</span>
           </div>
 
-          <form className={styles.inquiryForm} onSubmit={handleSubmitInquiry}>
+          <form
+            className={styles.inquiryForm}
+            onSubmit={handleSubmitInquiry}
+            onFocusCapture={checkLogin}
+          >
             <div className={styles.textareaWrap}>
               <textarea
                 placeholder="문의사항을 입력해 주세요."
@@ -689,7 +708,7 @@ export default function StayDetail({
               <button
                 type="submit"
                 className={styles.submitButton}
-                disabled={!canSubmit}
+                aria-disabled={!canSubmit}
               >
                 문의 하기
               </button>

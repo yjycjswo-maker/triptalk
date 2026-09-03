@@ -2,13 +2,21 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useMutation } from "@apollo/client/react";
+import {
+  CreateBoardDocument,
+  FetchBoardsDocument,
+} from "@/graphql/generated/graphql";
+import { uploadFile } from "@/lib/upload-file";
+import { hasAccessToken } from "@/lib/auth-client";
 import styles from "./styles.module.css";
 
 const IMAGE_SLOTS = [0, 1, 2];
 
 export default function TripTalkWrite() {
   const router = useRouter();
+  const [createBoard] = useMutation(CreateBoardDocument);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [password, setPassword] = useState("");
@@ -17,14 +25,35 @@ export default function TripTalkWrite() {
   const [address, setAddress] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [imageFiles, setImageFiles] = useState<(File | null)[]>([null, null, null]);
   const [imagePreviews, setImagePreviews] = useState<(string | null)[]>([null, null, null]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  useEffect(() => {
+    if (hasAccessToken()) {
+      let cancelled = false;
+      queueMicrotask(() => {
+        if (!cancelled) setIsAuthorized(true);
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+    router.replace(`/login?returnTo=${encodeURIComponent("/trip-talk/write")}`);
+  }, [router]);
 
   const canSubmit = Boolean(title.trim() && author.trim() && password.trim() && content.trim());
 
   const handleImageChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+    setImageFiles((current) => {
+      const next = [...current];
+      next[index] = file;
+      return next;
+    });
     setImagePreviews((current) => {
       const next = [...current];
       if (next[index]) URL.revokeObjectURL(next[index]);
@@ -37,13 +66,51 @@ export default function TripTalkWrite() {
     event.preventDefault();
     if (!canSubmit || isSubmitting) return;
     setIsSubmitting(true);
+    setSubmitError("");
     try {
-      await new Promise((resolve) => setTimeout(resolve, 400));
+      const images = await Promise.all(
+        imageFiles.filter((file): file is File => file !== null).map(uploadFile),
+      );
+      const { data } = await createBoard({
+        variables: {
+          createBoardInput: {
+            writer: author.trim(),
+            password,
+            title: title.trim(),
+            contents: content.trim(),
+            youtubeUrl: youtubeUrl.trim() || undefined,
+            images,
+            boardAddress: {
+              zipcode: zipcode.trim() || undefined,
+              address: address.trim() || undefined,
+              addressDetail: addressDetail.trim() || undefined,
+            },
+          },
+        },
+        refetchQueries: [
+          {
+            query: FetchBoardsDocument,
+            variables: { page: 1, search: "" },
+          },
+        ],
+        awaitRefetchQueries: true,
+      });
+
+      if (!data?.createBoard._id) {
+        throw new Error("등록된 게시글 정보를 확인하지 못했습니다.");
+      }
+
       router.push("/trip-talk");
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : "게시글 등록에 실패했습니다.",
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (!isAuthorized) return null;
 
   return (
     <section className={styles.section}>
@@ -111,6 +178,8 @@ export default function TripTalkWrite() {
               ))}
             </div>
           </div>
+
+          {submitError && <p className={styles.submitError}>{submitError}</p>}
 
           <div className={styles.actions}>
             <button type="button" className={styles.cancelButton} onClick={() => router.push("/trip-talk")}>취소</button>

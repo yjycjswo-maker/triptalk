@@ -11,7 +11,8 @@
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 16px 24px;
+  /* 게시글 행의 삭제 버튼 영역까지 포함해 열 위치를 동일하게 맞춤 */
+  padding: 16px 64px 16px 24px;
 }
 
 .rows {
@@ -158,6 +159,10 @@
 }
 
 @media (max-width: 780px) {
+  .headerRow {
+    padding: 14px 52px 14px 16px;
+  }
+
   .row {
     min-height: 52px;
     padding: 14px 52px 14px 16px;

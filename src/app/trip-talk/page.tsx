@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Header from "@/components/commons/header";
 import HeroBanner from "@/components/hero/banner";
 import HotTalk from "@/components/boards/hot-talk";
@@ -10,7 +11,9 @@ export default function TripTalkPage() {
       <main>
         <HeroBanner />
         <HotTalk />
-        <Board />
+        <Suspense fallback={null}>
+          <Board />
+        </Suspense>
       </main>
     </>
   );

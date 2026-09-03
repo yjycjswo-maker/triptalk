@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
 import { UPDATE_USER_PICTURE } from "@/graphql/mutations";
 import { FETCH_USER_LOGGED_IN } from "@/graphql/queries";
@@ -81,11 +81,24 @@ export default function Header() {
     router.replace("/trip-talk");
   };
 
+  const handleTripTalkClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (pathname !== "/trip-talk") return;
+
+    event.preventDefault();
+    window.dispatchEvent(new Event("trip-talk:reset"));
+    router.replace("/trip-talk", { scroll: false });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
         <div className={styles.leftGroup}>
-          <Link href="/trip-talk" className={styles.logo}>
+          <Link
+            href="/trip-talk"
+            className={styles.logo}
+            onClick={handleTripTalkClick}
+          >
             <Image
               src="/icon/logo/black_size_m.svg"
               alt="TRIP TRIP"
@@ -102,6 +115,11 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={
+                    item.href === "/trip-talk"
+                      ? handleTripTalkClick
+                      : undefined
+                  }
                   className={`${styles.navItem} ${isActive ? styles.navItemActive : ""}`}
                 >
                   {item.label}

@@ -1,5 +1,23 @@
 import { gql } from "@apollo/client";
 
+export const CREATE_BOARD = gql`
+  mutation CreateBoard($createBoardInput: CreateBoardInput!) {
+    createBoard(createBoardInput: $createBoardInput) {
+      _id
+    }
+  }
+`;
+
+export const CREATE_TRAVELPRODUCT = gql`
+  mutation CreateTravelproduct(
+    $createTravelproductInput: CreateTravelproductInput!
+  ) {
+    createTravelproduct(createTravelproductInput: $createTravelproductInput) {
+      _id
+    }
+  }
+`;
+
 export const LOGIN_USER = gql`
   mutation LoginUser($email: String!, $password: String!) {
     loginUser(email: $email, password: $password) {

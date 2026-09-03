@@ -1,40 +1,52 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useParams } from "next/navigation";
+import { useQuery } from "@apollo/client/react";
+import { format } from "date-fns";
 import Header from "@/components/commons/header";
 import TripTalkDetail from "@/components/boards/trip-talk-detail";
-import { getTripTalkPost } from "@/lib/trip-talk-data";
+import { FetchBoardDocument } from "@/graphql/generated/graphql";
 
-interface PageProps {
-  params: Promise<{ id: string }>; // Next.js 15+ 부터 params가 Promise로 바뀜
-}
-
-// TODO: 실제로는 params.id로 API 조회 (지금은 게시판 목데이터에서 찾아옴)
-export default async function TripTalkDetailPage({ params }: PageProps) {
-  const { id } = await params; // Promise이므로 await 필요
-  const post = getTripTalkPost(Number(id));
-
-  if (!post) {
-    notFound(); // 목데이터에 없는 번호면 404 처리
-  }
+export default function TripTalkDetailPage() {
+  const params = useParams<{ id: string }>();
+  const { data, loading, error } = useQuery(FetchBoardDocument, {
+    variables: { boardId: params.id },
+    skip: !params.id,
+  });
+  const board = data?.fetchBoard;
+  const storedImage = board?.images?.find(Boolean) ?? "";
+  const mainImage = storedImage.startsWith("http")
+    ? storedImage
+    : storedImage
+      ? `https://storage.googleapis.com/${storedImage}`
+      : "";
+  const address = [
+    board?.boardAddress?.address,
+    board?.boardAddress?.addressDetail,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <>
       <Header />
       <main>
-        <TripTalkDetail
-          title={post.title}
-          author={post.author}
-          avatar="/img/profile/avatar-1.png"
-          date={post.date}
-          address="서울 특별시 강남구 신논현로 111-6"
-          mainImage="/img/triptalk/img-1.png"
-          bodyParagraphs={[
-            "살겠노라 살겠노라, 청산에 살겠노라.\n머루랑 다래를 먹고 청산에 살겠노라.",
-            "우는구나 우는구나 새여, 자고 일어나 우는구나 새여.\n너보다 시름 많은 나도 자고 일어나 우노라.",
-          ]}
-          videoThumbnail="/img/triptalk/video-thumb-1.png"
-          viewCount={24}
-          likeCount={12}
-        />
+        {loading && <p>게시글을 불러오는 중입니다.</p>}
+        {error && <p>게시글을 불러오지 못했습니다.</p>}
+        {board && (
+          <TripTalkDetail
+            title={board.title}
+            author={board.writer ?? "익명"}
+            avatar="/img/profile/avatar-1.png"
+            date={format(new Date(String(board.createdAt)), "yyyy.MM.dd")}
+            address={address}
+            mainImage={mainImage}
+            bodyParagraphs={[board.contents]}
+            videoThumbnail=""
+            viewCount={0}
+            likeCount={board.likeCount}
+          />
+        )}
       </main>
     </>
   );

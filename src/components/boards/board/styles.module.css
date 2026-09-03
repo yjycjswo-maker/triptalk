@@ -38,6 +38,16 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
 }
 
+.status {
+  width: 100%;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-400);
+  font-size: 14px;
+}
+
 @media (max-width: 780px) {
   .tableCard {
     min-width: 0;
